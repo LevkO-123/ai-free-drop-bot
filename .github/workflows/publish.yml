@@ -35,6 +35,9 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Validate Python sources
         run: python -m compileall -q bot.py avatar.py branding.py bluesky.py
+      - name: Validate current official release feeds without publishing
+        if: ${{ github.event_name == 'push' }}
+        run: python bot.py --dry-run
       - name: Dry-run from the GitHub Actions UI
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run == true }}
         run: python bot.py --dry-run
