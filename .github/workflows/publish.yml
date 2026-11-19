@@ -42,7 +42,7 @@ jobs:
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run == true }}
         run: python bot.py --dry-run
       - name: Publish live only if configured
-        if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == false) }}
+        if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == false) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[publish-live]')) }}
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL: ${{ vars.TELEGRAM_CHANNEL }}
@@ -62,7 +62,7 @@ jobs:
             python bluesky.py || echo "::warning::Optional Bluesky cross-post did not complete."
           fi
       - name: Commit compact state when changed
-        if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == false) }}
+        if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == false) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[publish-live]')) }}
         shell: bash
         run: |
           if ! git diff --quiet -- data/state.json; then
