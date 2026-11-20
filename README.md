@@ -83,3 +83,7 @@ The [25 original ready-to-copy AI prompts](FREE_PROMPTS.md) are permanently acce
 ### Verified growth measurement
 
 Telegram member counts come from Telegram's official `getChatMemberCount` method, never from estimates. Baseline is stored and changes are checked before any growth claim. A TikTok media import or a draft is not a posted video.
+
+### Live welcome update validation
+
+The original Telegram channel description was already applied. The next one-time welcome update edits only the existing pinned message (no duplicate post), with the verified 25-prompt directory link. If Telegram reports another failure, stop and inspect the exact response before any retry.
