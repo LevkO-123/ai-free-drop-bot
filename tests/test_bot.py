@@ -21,9 +21,25 @@ def candidate(name="x", at=NOW):
 
 
 class PublisherTests(unittest.TestCase):
-    def test_pick_recent_official_release(self):
-        state = {"posted": [], "tips": [], "counts": [], "branding": {}}
+    def test_pick_recent_official_release_after_daily_prompt(self):
+        state = {"posted": [{"id": "tip-0", "date": NOW.date().isoformat(),
+                             "time": bot.iso(NOW), "project": "AI Workflow"}],
+                 "tips": ["tip-0"], "counts": [], "branding": {}}
         self.assertEqual(bot.choose_post([candidate()], state, NOW)["id"], candidate()["id"])
+
+    def test_first_daily_post_is_useful_prompt(self):
+        state = {"posted": [], "tips": [], "counts": [], "branding": {}}
+        item = bot.choose_post([candidate()], state, NOW)
+        self.assertEqual(item["id"], "tip-0")
+        rendered = bot.format_message(item)
+        self.assertIn("FREE AI PROMPT", rendered)
+        self.assertIn("<pre>", rendered)
+        self.assertLess(len(rendered), 4096)
+
+    def test_all_prompt_posts_are_valid_telegram_size(self):
+        for i, (title, body, url) in enumerate(bot.TIPS):
+            item = {"id": "tip-" + str(i), "title": title, "body": body, "url": url}
+            self.assertLessEqual(len(bot.format_message(item)), 4096)
 
     def test_old_release_uses_evergreen_tip(self):
         state = {"posted": [], "tips": [], "counts": [], "branding": {}}
