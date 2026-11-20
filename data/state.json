@@ -11,6 +11,12 @@
       "date": "2026-11-20",
       "time": "2026-11-20T00:12:01+00:00",
       "project": "ComfyUI"
+    },
+    {
+      "id": "https://github.com/ollama/ollama/releases/tag/v0.40.17-rc2",
+      "date": "2026-11-20",
+      "time": "2026-11-20T02:12:58+00:00",
+      "project": "Ollama"
     }
   ],
   "tips": [],
