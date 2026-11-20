@@ -1,6 +1,20 @@
 {
-  "posted": [],
+  "posted": [
+    {
+      "id": "https://github.com/ggml-org/llama.cpp/releases/tag/b12556",
+      "date": "2026-11-20",
+      "time": "2026-11-20T00:04:49+00:00",
+      "project": "llama.cpp"
+    }
+  ],
   "tips": [],
   "counts": [],
-  "branding": {}
+  "branding": {
+    "last_profile_attempt": "2026-11-20",
+    "profile_done": true,
+    "welcome_id": 3,
+    "welcome_done": true,
+    "last_pin_attempt": "2026-11-20",
+    "pinned": true
+  }
 }
