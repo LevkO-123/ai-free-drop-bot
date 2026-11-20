@@ -97,7 +97,7 @@ def read_feed(repo, label, use):
         prefix = "https://github.com/" + repo + "/releases/tag/"
         if not title or updated is None or not href.startswith(prefix):
             continue
-        if re.search(r"(?:^|[-_ .])(alpha|beta|rc|nightly|preview)(?:\d|[-_ .]|$)", title, re.I):
+        if re.search(r"(?:^|[-_ .])(alpha|beta|rc|nightly|preview)(?:\d|[-_ .]|$)", title + " " + href.rsplit("/", 1)[-1], re.I):
             continue
         result.append({"id": href, "title": re.sub(r"\s+", " ", title)[:120],
                        "project": label, "use": use, "updated": iso(updated), "url": href})
