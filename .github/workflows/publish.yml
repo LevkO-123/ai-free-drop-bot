@@ -152,6 +152,20 @@ jobs:
       - name: Inspect TeleAdda public free form (read-only)
         if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[inspect-teleadda]') }}
         run: python scripts/inspect_teleadda.py
+      - name: Submit AIFREEDROP once to TeleAdda's free directory
+        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[submit-teleadda]') }}
+        run: python scripts/submit_teleadda.py
+      - name: Persist free listing outcome
+        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[submit-teleadda]') }}
+        shell: bash
+        run: |
+          git add data/teleadda_submission.json
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "ops: record one-time TeleAdda submission [skip ci]"
+            git push
+          fi
       - name: Validate current official release feeds without publishing
         if: ${{ github.event_name == 'push' }}
         run: python bot.py --dry-run
