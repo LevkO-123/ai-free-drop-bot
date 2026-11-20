@@ -25,9 +25,10 @@ def refresh(api=telegram, loader=load_state, persist=save_state):
     message_id = status.get("welcome_id")
     if not isinstance(message_id, int) or message_id <= 0:
         raise RuntimeError("Original pinned welcome message id not found; do not create duplicate post")
-    api(token, "setChatDescription", {"chat_id": CHANNEL, "description": DESCRIPTION})
-    status["description_v2"] = True
-    persist(state)
+    if not status.get("description_v2"):
+        api(token, "setChatDescription", {"chat_id": CHANNEL, "description": DESCRIPTION})
+        status["description_v2"] = True
+        persist(state)
     api(token, "editMessageText", {"chat_id": CHANNEL, "message_id": message_id,
                                   "text": WELCOME, "parse_mode": "HTML"})
     status["version"] = 3
