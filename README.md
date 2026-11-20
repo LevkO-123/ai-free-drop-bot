@@ -69,3 +69,7 @@ One-shot GitHub Actions member snapshots use the bot's current `getChatMemberCou
 ### Free technology directory — final read-only inspection
 
 TelegramGroups.co claims an instant free 24-hour category boost for general technology channels. Its public form exceeds the earlier 150KB inspection limit, so the second read-only inspection allows a larger response and submits nothing.
+
+### Channel welcome v2
+
+Replaces the **existing** pinned welcome without posting another announcement. New description clarifies copy-ready AI prompts, free tools, truthful costs and source links. Only the @AIFREEDROP Telegram channel can be edited. The action is one-time and records version=2 in the compact state.
