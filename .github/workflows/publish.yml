@@ -38,6 +38,20 @@ jobs:
       - name: Inspect public directory forms without submitting
         if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[inspect-forms]') }}
         run: python scripts/inspect_public_forms.py
+      - name: Submit free TGMetrix and TeleSeeker forms once
+        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[submit-public-forms]') }}
+        run: python scripts/submit_public_forms.py
+      - name: Save verified public directory submission statuses
+        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[submit-public-forms]') }}
+        shell: bash
+        run: |
+          git add data/directory_submissions.json
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "chore: record public directory submission outcomes [skip ci]"
+            git push
+          fi
       - name: Submit to TGFind public directory (one-time opt-in)
         if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[submit-tgfind]') }}
         run: python scripts/submit_tgfind.py
