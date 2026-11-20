@@ -20,6 +20,18 @@ class RefreshTests(unittest.TestCase):
         self.assertEqual(requests[1][1]["message_id"],3)
         self.assertEqual(state["branding"]["version"],3)
 
+    def test_existing_description_is_not_sent_again(self):
+        state = {"branding": {"welcome_id": 3, "description_v2": True,
+                              "profile_done": True, "version": 2}}
+        requests = []
+        with patch.dict(os.environ, {"TELEGRAM_BOT_TOKEN": "test-token",
+                                     "TELEGRAM_CHANNEL": "@AIFREEDROP"}):
+            refresh_channel.refresh(api=lambda _t, method, payload:
+                                    requests.append((method, payload)),
+                                    loader=lambda: state, persist=lambda s: None)
+        self.assertEqual([method for method, _ in requests], ["editMessageText"])
+        self.assertEqual(state["branding"]["version"], 3)
+
     def test_no_duplicate_welcome_when_message_id_unknown(self):
         with patch.dict(os.environ,{"TELEGRAM_BOT_TOKEN":"test-token",
                                      "TELEGRAM_CHANNEL":"@AIFREEDROP"}):
