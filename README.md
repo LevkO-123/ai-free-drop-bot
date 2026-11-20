@@ -101,3 +101,7 @@ Submit the public AIFREEDROP channel **once**, without a login, via the director
 ### Live AI video tutorial launch
 
 A one-time Telegram article introducing the independently documented real car-photo-to-AI-video workflow is posted to @AIFREEDROP. The posted Telegram message ID is saved in `data/launch_guide.json`; never confuse a workflow run with confirmed Telegram publication.
+
+### Telegram launch retry verification
+
+The first launch attempt stopped before requesting Telegram because the standalone script lacked the repository import path. The corrected second attempt runs the tested one-time publisher; any further failure requires root-cause review instead of retries.
