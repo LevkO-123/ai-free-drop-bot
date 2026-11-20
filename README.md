@@ -22,3 +22,7 @@ Independent Telegram channel automation for [@AIFREEDROP](https://t.me/AIFREEDRO
 This project does **not** guarantee subscribers or revenue. GitHub Actions scheduling can be delayed. The automation cannot modify channel settings unless the bot has appropriate Telegram rights. No publication should be claimed before successful run logs confirm it.
 
 Existing REVLINE and Black Swan repos are separate and untouched.
+
+## Launch verification
+
+The live publisher can be exercised using a commit message containing `[publish-live]`. A workflow marked successful does not alone prove Telegram publication; inspect the publish step and `data/state.json`. Never store the bot token in source control.
