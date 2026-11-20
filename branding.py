@@ -13,11 +13,12 @@ DESCRIPTION = "Free AI tools, copy-and-paste prompts, practical workflows, offic
 WELCOME = (
     "🎁 <b>FREE AI PROMPT PACK — START HERE</b>\n\n"
     "Welcome to <b>AI FREE DROP</b>: useful AI tools you can actually try.\n\n"
-    "✅ <b>12 copy-and-paste AI prompts</b> for work, study and everyday tasks\n"
+    "✅ <b>25 free copy-and-paste AI prompts</b> for cars, work, study and everyday tasks\n"
     "🧰 Curated open-source tools with direct official source links\n"
     "🔎 Honest notes about free software versus paid APIs or hardware\n\n"
     "Start with the next prompt below, save it, and forward it to someone who needs it.\n"
-    "Free tool directory: https://github.com/LevkO-123/ai-free-drop-bot/blob/main/CATALOG.md\n\n"
+    "🎁 Free 25-prompt pack: https://github.com/LevkO-123/ai-free-drop-bot/blob/main/FREE_PROMPTS.md\n"
+    "Open-source tools: https://github.com/LevkO-123/ai-free-drop-bot/blob/main/CATALOG.md\n\n"
     "No fake airdrops, earnings guarantees or unsolicited messages.\n\n"
     "#FreeAI #AIPrompts #AITools"
 )
