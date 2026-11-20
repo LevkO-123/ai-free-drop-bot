@@ -133,12 +133,14 @@ def original_audio(file):
         obj.writeframes(samples.tobytes())
 
 def generate():
-    if not shutil.which("ffmpeg"):
-        raise RuntimeError("ffmpeg must be installed")
+    encoder = shutil.which("ffmpeg")
+    if not encoder:
+        import imageio_ffmpeg
+        encoder = imageio_ffmpeg.get_ffmpeg_exe()
     OUTPUT.parent.mkdir(parents=True,exist_ok=True)
     audio=OUTPUT.with_suffix(".wav")
     original_audio(audio)
-    cmd=["ffmpeg","-hide_banner","-loglevel","error","-y",
+    cmd=[encoder,"-hide_banner","-loglevel","error","-y",
          "-f","rawvideo","-pixel_format","rgb24","-video_size",f"{W}x{H}",
          "-framerate",str(FPS),"-i","pipe:0","-i",str(audio),
          "-c:v","libx264","-pix_fmt","yuv420p","-preset","ultrafast",
