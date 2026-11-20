@@ -39,3 +39,7 @@ The live publisher can be exercised using a commit message containing `[publish-
 - Channel growth is calculated from actual consecutive snapshots, not estimated from post views.
 - External distribution accounts are optional and not considered active until their own publishing logs confirm success.
 - Discovery content is also available at [CATALOG.md](CATALOG.md); this does not guarantee outside traffic.
+
+## Discovery and distribution
+
+A public release archive and Atom feed are generated from **verified posts already sent to the channel**. These are additional surfaces people can discover and subscribe through; they do not automatically produce traffic or subscribers. Unsolicited DMs, fake followers and paid campaigns are excluded. External accounts (such as Bluesky) must be legitimately connected before cross-posting can happen.
