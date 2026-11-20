@@ -5,8 +5,9 @@ Uses a small repository state marker for idempotency.
 """
 from __future__ import annotations
 import datetime as dt
-import json, os
+import json, os, sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from bot import telegram
 
 MARK=Path("data/launch_guide.json")
