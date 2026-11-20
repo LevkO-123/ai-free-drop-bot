@@ -34,7 +34,7 @@ jobs:
       - name: Run unit tests
         run: python -m unittest discover -s tests -v
       - name: Validate Python sources
-        run: python -m compileall -q bot.py avatar.py branding.py bluesky.py
+        run: python -m compileall -q bot.py avatar.py branding.py bluesky.py discovery.py
       - name: Validate current official release feeds without publishing
         if: ${{ github.event_name == 'push' }}
         run: python bot.py --dry-run
@@ -61,14 +61,17 @@ jobs:
           if [[ -n "$BSKY_HANDLE" && -n "$BSKY_APP_PASSWORD" ]]; then
             python bluesky.py || echo "::warning::Optional Bluesky cross-post did not complete."
           fi
+      - name: Generate public release archive and Atom feed
+        if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == false) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[publish-live]')) }}
+        run: python discovery.py
       - name: Commit compact state when changed
         if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == false) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[publish-live]')) }}
         shell: bash
         run: |
-          if ! git diff --quiet -- data/state.json; then
+          git add data/state.json DROPS.md feed.xml
+          if ! git diff --cached --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data/state.json
-            git commit -m "chore: update published IDs and metrics [skip ci]"
+            git commit -m "chore: update release archive and metrics [skip ci]"
             git push
           fi
