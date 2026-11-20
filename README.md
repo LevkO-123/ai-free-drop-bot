@@ -97,3 +97,7 @@ TeleAdda advertises an unpaid, no-login public Telegram channel listing. The AIF
 ### TeleAdda live listing attempt
 
 Submit the public AIFREEDROP channel **once**, without a login, via the directory's advertised free listing form. Record its actual response and do not confuse an unconfirmed response with a live listing.
+
+### Live AI video tutorial launch
+
+A one-time Telegram article introducing the independently documented real car-photo-to-AI-video workflow is posted to @AIFREEDROP. The posted Telegram message ID is saved in `data/launch_guide.json`; never confuse a workflow run with confirmed Telegram publication.
