@@ -43,3 +43,7 @@ The live publisher can be exercised using a commit message containing `[publish-
 ## Discovery and distribution
 
 A public release archive and Atom feed are generated from **verified posts already sent to the channel**. These are additional surfaces people can discover and subscribe through; they do not automatically produce traffic or subscribers. Unsolicited DMs, fake followers and paid campaigns are excluded. External accounts (such as Bluesky) must be legitimately connected before cross-posting can happen.
+
+## External discovery listings
+
+- TGDirectory: one-time free submission through the site's documented REST API. Submission is reviewed and may be pending or rejected; it does not mean the channel is already listed.
