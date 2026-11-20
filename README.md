@@ -51,3 +51,7 @@ A public release archive and Atom feed are generated from **verified posts alrea
 ### TGFind free listing
 
 A single @AIFREEDROP submission is made through TGFind's documented anonymous MCP endpoint. Acceptance and resulting index status must be checked in the GitHub Actions log; never describe an unverified submission as a new subscriber.
+
+### Directory submissions research
+
+Submit each channel only where the destination explicitly offers free public listings. Read public HTML forms to identify whether legitimate direct submission is possible. Do not bypass sign-in, captchas, or rate limits; stop at JavaScript-only or protected forms.
