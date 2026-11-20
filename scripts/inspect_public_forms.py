@@ -6,13 +6,7 @@ of user data. Only form names, action URLs and method are printed for inspection
 from html.parser import HTMLParser
 from urllib.request import Request, urlopen
 
-PAGES = (
-    "https://tgmetrix.com/en/add-channel/",
-    "https://teleseeker.com/submit",
-    "https://www.teleadda.com/add",
-    "https://telegramgroups.co/submit",
-    "https://telegramdir.com/submit",
-)
+PAGES = ("https://telegramgroups.co/submit",)
 
 
 class FormScanner(HTMLParser):
@@ -44,9 +38,9 @@ def inspect():
         try:
             req = Request(url, headers={"User-Agent": "Mozilla/5.0 (AI-FREE-DROP 1.0)"})
             with urlopen(req, timeout=9) as response:
-                body = response.read(150_001)
-            if len(body) > 150_000:
-                print("SKIP: exceeds 150KB inspection limit")
+                body = response.read(850_001)
+            if len(body) > 850_000:
+                print("SKIP: exceeds 850KB inspection limit")
                 continue
             scanner = FormScanner()
             scanner.feed(body.decode("utf-8", errors="replace"))
