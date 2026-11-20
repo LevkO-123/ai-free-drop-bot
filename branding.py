@@ -9,19 +9,19 @@ import uuid
 from avatar import render
 
 TITLE = "AI FREE DROP | Tools & Workflows"
-DESCRIPTION = ("Free AI tools, open-source releases & practical workflows. "
-               "Official source links. No fake offers or hype. Independent channel.")
+DESCRIPTION = "Free AI tools, copy-and-paste prompts, practical workflows, official open-source releases and clear cost notes. New practical ideas regularly. Independent channel with original examples and verified links. No fake deals, spam or income promises."
 WELCOME = (
-    "⚡ <b>WELCOME TO AI FREE DROP</b>\n\n"
-    "Free AI tools, practical workflows and official open-source release updates.\n\n"
-    "🧰 Discover useful new AI tools\n"
-    "💡 Learn quick workflows you can use\n"
-    "🔎 Verify claims through direct source links\n\n"
-    "Some tools are free to download but models or hosting may cost money. "
-    "We never promise free money or guaranteed results.\n\n"
-    "Subscribe for the next drop. 🚀\n\n"
-    "#AITools #OpenSource #AIWorkflow"
+    "🎁 <b>FREE AI PROMPT PACK — START HERE</b>\n\n"
+    "Welcome to <b>AI FREE DROP</b>: useful AI tools you can actually try.\n\n"
+    "✅ <b>12 copy-and-paste AI prompts</b> for work, study and everyday tasks\n"
+    "🧰 Curated open-source tools with direct official source links\n"
+    "🔎 Honest notes about free software versus paid APIs or hardware\n\n"
+    "Start with the next prompt below, save it, and forward it to someone who needs it.\n"
+    "Free tool directory: https://github.com/LevkO-123/ai-free-drop-bot/blob/main/CATALOG.md\n\n"
+    "No fake airdrops, earnings guarantees or unsolicited messages.\n\n"
+    "#FreeAI #AIPrompts #AITools"
 )
+
 
 
 def upload_avatar(token, channel, *, image=None):
