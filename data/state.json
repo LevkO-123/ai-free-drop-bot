@@ -32,7 +32,9 @@
     "welcome_id": 3,
     "welcome_done": true,
     "last_pin_attempt": "2026-11-20",
-    "pinned": true
+    "pinned": true,
+    "description_v2": true,
+    "version": 2
   },
   "observations": [
     {
