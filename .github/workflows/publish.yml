@@ -23,7 +23,7 @@ concurrency:
 jobs:
   publisher:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 19
     steps:
       - name: Check out publisher code
         uses: actions/checkout@v7
@@ -181,6 +181,33 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git commit -m "ops: record verified Telegram tutorial publication [skip ci]"
+            git push
+          fi
+      - name: Render ten licensed no-text VAULTIX test videos
+        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[build-10]') }}
+        timeout-minutes: 17
+        shell: bash
+        run: |
+          python -m pip install --quiet 'imageio-ffmpeg==0.6.0'
+          python promo_series.py
+          python - <<'PY'
+          from pathlib import Path
+          vids=sorted(Path('media/vaultix_series').glob('vaultix_??.mp4'))
+          assert len(vids)==10, f'Expected 10, got {len(vids)}'
+          for p in vids:
+              d=p.read_bytes()
+              assert d[4:8]==b'ftyp' and 300000<len(d)<30000000, (p,len(d))
+          print('All 10 original MP4s checked', sum(p.stat().st_size for p in vids), 'total bytes')
+          PY
+      - name: Store ten verified VAULTIX shorts for TikTok scheduling
+        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[build-10]') }}
+        shell: bash
+        run: |
+          git add media/vaultix_series/vaultix_??.mp4
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "media: add ten original VAULTIX edits [skip ci]"
             git push
           fi
       - name: Validate current official release feeds without publishing
