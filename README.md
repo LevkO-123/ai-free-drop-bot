@@ -105,3 +105,7 @@ A one-time Telegram article introducing the independently documented real car-ph
 ### Telegram launch retry verification
 
 The first launch attempt stopped before requesting Telegram because the standalone script lacked the repository import path. The corrected second attempt runs the tested one-time publisher; any further failure requires root-cause review instead of retries.
+
+### Telegram live-channel verification — November 20
+
+A single audited prompt is sent to the public @AIFREEDROP channel after the existing 3/day release cap is reached. This explicitly verifies the target channel with Telegram Bot API `getChat`, records the returned live `message_id`, and checks current member count. This is a one-time owner-authorized check, not a recurring increase in posting volume.
