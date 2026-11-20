@@ -24,3 +24,7 @@ More free AI prompts → Search @AIFREEDROP on Telegram.
 - The uploaded video is NOT a claim that it was posted. Check actual publication status and a link.
 - Measure TikTok watch views / visits and real Telegram subscribers. No fake traffic, no bots and no unsolicited messages.
 - Do not touch REVLINE, Black Swan, or unrelated repositories.
+
+## Media runner verification
+
+The first one-time render found no system ffmpeg on the GitHub runner. The second render uses the pinned, freely available imageio-ffmpeg binary and validates the MP4 container before committing. No third-party paid services.
