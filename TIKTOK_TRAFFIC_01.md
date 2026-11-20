@@ -28,3 +28,7 @@ More free AI prompts → Search @AIFREEDROP on Telegram.
 ## Media runner verification
 
 The first one-time render found no system ffmpeg on the GitHub runner. The second render uses the pinned, freely available imageio-ffmpeg binary and validates the MP4 container before committing. No third-party paid services.
+
+## Creative direction v2
+
+Original cartoon slideshow was rejected by the owner. A second video must use real cinematic car footage, faster edits, fewer words, stronger contrast and automotive-first relevance. Pexels stock clips are under the free Pexels license; each source URL must be checked before use. No posting until the revised creative is accepted.
