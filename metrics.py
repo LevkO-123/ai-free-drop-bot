@@ -28,6 +28,8 @@ def capture(now=None, api=telegram, persist=save_state, loader=load_state):
         observations.append({"time": iso(now), "members": count})
         state["observations"] = observations[-120:]
     counts = state.setdefault("counts", [])
+    if counts and "initial_subscribers" not in state:
+        state["initial_subscribers"] = counts[0].get("subscribers")
     for entry in counts:
         if entry.get("date") == today:
             entry["subscribers"] = count
@@ -37,10 +39,9 @@ def capture(now=None, api=telegram, persist=save_state, loader=load_state):
     state["counts"] = counts[-90:]
     persist(state)
     print("Channel member count (including existing admins if counted by Telegram):", count)
-    if counts:
-        baseline = counts[0].get("subscribers")
-        if isinstance(baseline, int):
-            print("Net change since first recorded baseline:", count - baseline)
+    baseline = state.get("initial_subscribers")
+    if isinstance(baseline, int):
+        print("Net change since first recorded baseline:", count - baseline)
     return count
 
 
