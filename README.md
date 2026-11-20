@@ -79,3 +79,7 @@ Replaces the **existing** pinned welcome without posting another announcement. N
 ## Free prompt pack access
 
 The [25 original ready-to-copy AI prompts](FREE_PROMPTS.md) are permanently accessible without an email or payment. The Telegram channel's existing pinned welcome points to this resource; the welcome is edited in place, not reposted.
+
+### Verified growth measurement
+
+Telegram member counts come from Telegram's official `getChatMemberCount` method, never from estimates. Baseline is stored and changes are checked before any growth claim. A TikTok media import or a draft is not a posted video.
