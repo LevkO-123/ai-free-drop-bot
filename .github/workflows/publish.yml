@@ -166,6 +166,23 @@ jobs:
             git commit -m "ops: record one-time TeleAdda submission [skip ci]"
             git push
           fi
+      - name: Publish one useful car AI workflow to AIFREEDROP
+        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[launch-guide]') }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ vars.TELEGRAM_CHANNEL }}
+        run: python scripts/post_ai_car_guide.py
+      - name: Record verified one-time Telegram tutorial URL
+        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[launch-guide]') }}
+        shell: bash
+        run: |
+          git add data/launch_guide.json
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "ops: record verified Telegram tutorial publication [skip ci]"
+            git push
+          fi
       - name: Validate current official release feeds without publishing
         if: ${{ github.event_name == 'push' }}
         run: python bot.py --dry-run
