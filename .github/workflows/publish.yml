@@ -35,6 +35,9 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Validate Python sources
         run: python -m compileall -q bot.py avatar.py branding.py bluesky.py discovery.py
+      - name: Inspect public directory forms without submitting
+        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[inspect-forms]') }}
+        run: python scripts/inspect_public_forms.py
       - name: Submit to TGFind public directory (one-time opt-in)
         if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[submit-tgfind]') }}
         run: python scripts/submit_tgfind.py
