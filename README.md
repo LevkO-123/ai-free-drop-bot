@@ -30,3 +30,10 @@ Existing REVLINE and Black Swan repos are separate and untouched.
 ## Launch verification
 
 The live publisher can be exercised using a commit message containing `[publish-live]`. A workflow marked successful does not alone prove Telegram publication; inspect the publish step and `data/state.json`. Never store the bot token in source control.
+
+## Growth measurement
+
+- `data/state.json` includes the real subscriber count measured by the Telegram Bot API (one snapshot per UTC date).
+- Channel growth is calculated from actual consecutive snapshots, not estimated from post views.
+- External distribution accounts are optional and not considered active until their own publishing logs confirm success.
+- Discovery content is also available at [CATALOG.md](CATALOG.md); this does not guarantee outside traffic.
