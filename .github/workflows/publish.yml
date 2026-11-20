@@ -149,6 +149,9 @@ jobs:
             git commit -m "media: approved direction, text-free car film [skip ci]"
             git push
           fi
+      - name: Inspect TeleAdda public free form (read-only)
+        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[inspect-teleadda]') }}
+        run: python scripts/inspect_teleadda.py
       - name: Validate current official release feeds without publishing
         if: ${{ github.event_name == 'push' }}
         run: python bot.py --dry-run
