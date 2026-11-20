@@ -1,5 +1,7 @@
 # AI FREE DROP — Telegram Autopilot
 
+**25 copy-ready AI prompts for cars, work, creativity, learning and safe automation → [Use the free prompt pack](FREE_PROMPTS.md).**
+
 **Discover 8 tested source-linked free and open-source AI tools → [Explore the practical directory](CATALOG.md).**
 
 **Get new AI release updates and workflow ideas → [Subscribe on Telegram](https://t.me/AIFREEDROP).**
