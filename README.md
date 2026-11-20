@@ -93,3 +93,7 @@ The original Telegram channel description was already applied. The next one-time
 ### Free launch distribution check
 
 TeleAdda advertises an unpaid, no-login public Telegram channel listing. The AIFREEDROP campaign checks the form schema once before submitting any data, without bypassing anti-spam controls.
+
+### TeleAdda live listing attempt
+
+Submit the public AIFREEDROP channel **once**, without a login, via the directory's advertised free listing form. Record its actual response and do not confuse an unconfirmed response with a live listing.
