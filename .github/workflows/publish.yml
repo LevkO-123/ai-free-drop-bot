@@ -35,6 +35,23 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Validate Python sources
         run: python -m compileall -q bot.py avatar.py branding.py bluesky.py discovery.py
+      - name: Refresh AI FREE DROP profile and pinned welcome once
+        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[refresh-channel]') }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ vars.TELEGRAM_CHANNEL }}
+        run: python refresh_channel.py
+      - name: Save new pinned welcome profile state
+        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[refresh-channel]') }}
+        shell: bash
+        run: |
+          git add data/state.json
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "chore: record AIFREEDROP profile refresh [skip ci]"
+            git push
+          fi
       - name: Inspect public directory forms without submitting
         if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[inspect-forms]') }}
         run: python scripts/inspect_public_forms.py
