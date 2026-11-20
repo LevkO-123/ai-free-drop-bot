@@ -75,3 +75,7 @@ TelegramGroups.co claims an instant free 24-hour category boost for general tech
 ### Channel welcome v2
 
 Replaces the **existing** pinned welcome without posting another announcement. New description clarifies copy-ready AI prompts, free tools, truthful costs and source links. Only the @AIFREEDROP Telegram channel can be edited. The action is one-time and records version=2 in the compact state.
+
+## Free prompt pack access
+
+The [25 original ready-to-copy AI prompts](FREE_PROMPTS.md) are permanently accessible without an email or payment. The Telegram channel's existing pinned welcome points to this resource; the welcome is edited in place, not reposted.
