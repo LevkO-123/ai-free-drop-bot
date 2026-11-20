@@ -47,3 +47,7 @@ A public release archive and Atom feed are generated from **verified posts alrea
 ## External discovery listings
 
 - TGDirectory: one-time free submission through the site's documented REST API. Submission is reviewed and may be pending or rejected; it does not mean the channel is already listed.
+
+### TGFind free listing
+
+A single @AIFREEDROP submission is made through TGFind's documented anonymous MCP endpoint. Acceptance and resulting index status must be checked in the GitHub Actions log; never describe an unverified submission as a new subscriber.
