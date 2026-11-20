@@ -33,5 +33,12 @@
     "welcome_done": true,
     "last_pin_attempt": "2026-11-20",
     "pinned": true
-  }
+  },
+  "observations": [
+    {
+      "time": "2026-11-20T02:37:30+00:00",
+      "members": 2
+    }
+  ],
+  "initial_subscribers": 2
 }
