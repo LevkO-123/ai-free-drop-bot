@@ -55,3 +55,9 @@ A single @AIFREEDROP submission is made through TGFind's documented anonymous MC
 ### Directory submissions research
 
 Submit each channel only where the destination explicitly offers free public listings. Read public HTML forms to identify whether legitimate direct submission is possible. Do not bypass sign-in, captchas, or rate limits; stop at JavaScript-only or protected forms.
+
+### Free directory coverage
+
+- TGFind: accepted, https://tgfind.net/en/resource/aifreedrop
+- TGDirectory: review pending, not confirmed live
+- TGMetrix and TeleSeeker: submit once through their published free forms and record the actual responses in `data/directory_submissions.json`. A form response that cannot be verified must remain `unconfirmed`.
