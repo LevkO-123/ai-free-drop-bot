@@ -85,3 +85,7 @@ Variant: AI-prompt-first. Asset: `media/vaultix_series/vaultix_10.mp4`.
 Caption:
 
 > Free prompt: 'Help me compare my dream car options with total ownership cost, unknowns, and a step-by-step plan. Don't invent current prices.' Save it for later. More prompts: @AIFREEDROP. #DreamCars #CarBuying #FreeAI
+
+## Finished media QA
+
+All ten rendered MP4s were validated with real GitHub Actions run `44681127320` (success; ten files under `media/vaultix_series`). This scoped visual review extracts real frames from every final file before any vidIQ scheduling. No overlay, no generated cartoon cars, zero new paid media.
