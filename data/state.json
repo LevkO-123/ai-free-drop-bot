@@ -5,10 +5,21 @@
       "date": "2026-11-20",
       "time": "2026-11-20T00:04:49+00:00",
       "project": "llama.cpp"
+    },
+    {
+      "id": "https://github.com/Comfy-Org/ComfyUI/releases/tag/v0.46.1",
+      "date": "2026-11-20",
+      "time": "2026-11-20T00:12:01+00:00",
+      "project": "ComfyUI"
     }
   ],
   "tips": [],
-  "counts": [],
+  "counts": [
+    {
+      "date": "2026-11-20",
+      "subscribers": 2
+    }
+  ],
   "branding": {
     "last_profile_attempt": "2026-11-20",
     "profile_done": true,
