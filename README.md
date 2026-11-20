@@ -2,6 +2,8 @@
 
 **25 copy-ready AI prompts for cars, work, creativity, learning and safe automation → [Use the free prompt pack](FREE_PROMPTS.md).**
 
+**Create a cinematic car video from one photo with a source-verified local AI workflow → [Read the practical guide](CAR_IMAGE_TO_AI_VIDEO.md).**
+
 **Discover 8 tested source-linked free and open-source AI tools → [Explore the practical directory](CATALOG.md).**
 
 **Get new AI release updates and workflow ideas → [Subscribe on Telegram](https://t.me/AIFREEDROP).**
