@@ -53,3 +53,10 @@ The 13.1-second, 14.5 MB licensed-car-footage cut rendered and passed source/MP4
 ## VAULTIX clean v3 — no on-screen copy
 
 Owner rejected overlays, large titles, logos and labels on the video. This version uses only full-frame, licensed moving car footage, nine rapid cuts, restrained grade, original audio. **Zero captions, CTA, logo, watermark, boxes or text in the frames.** Referral belongs only in the social caption and account bio; creator-directed privacy/music choices still apply. Do not publish v1 or v2.
+
+## Clean edit v3 — deliverable and TikTok draft
+
+- Final no-overlay MP4: `media/vaultix_clean_v3.mp4` (real motion footage, 9 quick cuts, original generated audio; contains no screen titles, labels or CTA).
+- Tested build: GitHub Actions run `44673353490` — successful; exported MP4 independently imported into vidIQ with status `ready`, upload ID `a8ab1caf-b195-4e60-8cdf-56280131dfbe`.
+- Current TikTok vidIQ draft ID: `568ce44f-1e42-421e-b098-c2102534e31b`. Refused at creation because TikTok requires creator-selected `privacyLevel`; `allowComment` and `musicUsageConfirmed` may also be required for direct publishing. Do **not** claim a TikTok post or measured referral traffic before published status and URL are confirmed.
+- Owner expressly rejected all text over the video. Do not reintroduce titles, logos or QR codes; funnel belongs only in post caption/profile.
