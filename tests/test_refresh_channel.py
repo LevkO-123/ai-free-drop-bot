@@ -18,7 +18,7 @@ class RefreshTests(unittest.TestCase):
                                     loader=lambda:state, persist=lambda s:None)
         self.assertEqual([x[0] for x in requests],["setChatDescription","editMessageText"])
         self.assertEqual(requests[1][1]["message_id"],3)
-        self.assertEqual(state["branding"]["version"],2)
+        self.assertEqual(state["branding"]["version"],3)
 
     def test_no_duplicate_welcome_when_message_id_unknown(self):
         with patch.dict(os.environ,{"TELEGRAM_BOT_TOKEN":"test-token",
