@@ -49,3 +49,7 @@ First build downloaded all three verified free moving-footage sources successful
 ## QA of final cinematic video
 
 The 13.1-second, 14.5 MB licensed-car-footage cut rendered and passed source/MP4 checks. Extract 8 frames from that exact exported file to check readability, video motion framing and CTA before any public TikTok posting.
+
+## VAULTIX clean v3 — no on-screen copy
+
+Owner rejected overlays, large titles, logos and labels on the video. This version uses only full-frame, licensed moving car footage, nine rapid cuts, restrained grade, original audio. **Zero captions, CTA, logo, watermark, boxes or text in the frames.** Referral belongs only in the social caption and account bio; creator-directed privacy/music choices still apply. Do not publish v1 or v2.
