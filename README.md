@@ -89,3 +89,7 @@ Telegram member counts come from Telegram's official `getChatMemberCount` method
 ### Live welcome update validation
 
 The original Telegram channel description was already applied. The next one-time welcome update edits only the existing pinned message (no duplicate post), with the verified 25-prompt directory link. If Telegram reports another failure, stop and inspect the exact response before any retry.
+
+### Free launch distribution check
+
+TeleAdda advertises an unpaid, no-login public Telegram channel listing. The AIFREEDROP campaign checks the form schema once before submitting any data, without bypassing anti-spam controls.
