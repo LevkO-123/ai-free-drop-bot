@@ -41,3 +41,7 @@ Original cartoon slideshow was rejected by the owner. A second video must use re
 - **CTA:** Telegram @AIFREEDROP. Verify that the Telegram channel delivers copy-ready prompts.
 - **Source license:** https://www.pexels.com/legal-pages/license/
 - **No TikTok publication without explicit preview approval and creator-selected privacy/music settings.**
+
+## Cinematic render second attempt
+
+First build downloaded all three verified free moving-footage sources successfully but bundled ffmpeg had no `drawtext` filter. Replaced filter-based typography with a transparent Pillow-designed overlay. Second build is the final scoped retry before root-cause reassessment; TikTok stays unpublished.
