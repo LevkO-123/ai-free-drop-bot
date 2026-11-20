@@ -9,6 +9,7 @@ Sources are downloaded only temporarily, not committed.
 import math, random, shutil, subprocess, tempfile, urllib.request, wave
 from array import array
 from pathlib import Path
+from PIL import Image, ImageDraw, ImageFont
 
 OUT=Path(__file__).resolve().parent/"media/vaultix_cinematic_v2.mp4"
 SOURCES={
@@ -53,6 +54,31 @@ def original_beat(path):
         out.setnchannels(1);out.setsampwidth(2);out.setframerate(rate)
         out.writeframes(audio.tobytes())
 
+
+def make_overlay(index,first,second,file):
+    image=Image.new("RGBA",(720,1280),(0,0,0,0))
+    d=ImageDraw.Draw(image)
+    fontpath=FONT if Path(FONT).exists() else "/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf"
+    def line(text,y,size,color):
+        f=ImageFont.truetype(fontpath,size)
+        while d.textbbox((0,0),text,font=f)[2]>630 and size>20:
+            size-=2;f=ImageFont.truetype(fontpath,size)
+        width=d.textbbox((0,0),text,font=f)[2]
+        x=(720-width)//2
+        d.text((x+3,y+4),text,font=f,fill=(0,0,0,230))
+        d.text((x,y),text,font=f,fill=color)
+    d.rounded_rectangle((18,276,702,620),radius=22,fill=(0,0,0,130))
+    d.rounded_rectangle((43,65,223,112),radius=10,fill=(0,0,0,130))
+    f=ImageFont.truetype(fontpath,24)
+    d.text((62,72),"VAULTIX",font=f,fill=(245,240,230,240))
+    d.rectangle((44,125,115,130),fill=(225,183,108,240))
+    line(first,372,68,(234,190,110,255) if index in (2,4,6) else (255,255,255,255))
+    line(second,464,53,(255,255,255,255))
+    if index==6:
+        d.rounded_rectangle((40,870,680,960),radius=14,fill=(0,0,0,205))
+        line("TELEGRAM: @AIFREEDROP",889,35,(234,190,110,255))
+    image.save(file)
+
 def main():
     ff=ffbin()
     with tempfile.TemporaryDirectory() as tmp:
@@ -73,24 +99,20 @@ def main():
         segments=[]
         for i,(key,seek,duration,line1,line2) in enumerate(SHOTS):
             video=scratch/(f"shot{i}.mp4")
-            color="0xE9C16B" if i in (2,4,6) else "white"
-            # Actual video is full frame; typography sits in the middle with contrast scrim.
+            overlay=scratch/(f"overlay{i}.png")
+            make_overlay(i,line1,line2,overlay)
             vf=(
-             "scale=720:1280:force_original_aspect_ratio=increase,"
-             "crop=720:1280,eq=contrast=1.12:saturation=0.88:brightness=-0.04,"
-             "vignette=PI/7,"
-             "drawbox=x=0:y=220:w=720:h=490:color=black@0.33:t=fill,"
-             f"drawtext=fontfile={FONT}:text='VAULTIX':fontsize=24:fontcolor=white@0.75:x=44:y=89,"
-             "drawbox=x=44:y=132:w=65:h=4:color=0xE9C16B:t=fill,"
-             f"drawtext=fontfile={FONT}:text='{line1}':fontsize=57:fontcolor={color}:x=(w-text_w)/2:y=390:borderw=2:bordercolor=black@0.8,"
-             f"drawtext=fontfile={FONT}:text='{line2}':fontsize=44:fontcolor=white:x=(w-text_w)/2:y=480:borderw=2:bordercolor=black@0.8"
+              "[0:v]scale=720:1280:force_original_aspect_ratio=increase,"
+              "crop=720:1280,eq=contrast=1.12:saturation=0.88:brightness=-0.04,"
+              "vignette=PI/7[background];"
+              "[background][1:v]overlay=x=0:y=0:shortest=1:format=auto[v]"
             )
-            if i==6:
-                vf+=f",drawtext=fontfile={FONT}:text='TELEGRAM / @AIFREEDROP':fontsize=32:fontcolor=0xE9C16B:x=(w-text_w)/2:y=900:borderw=2:bordercolor=black"
-            args=[ff,"-hide_banner","-loglevel","error","-y","-ss",str(seek),
-                "-i",str(fetched[key]),"-t",str(duration),"-an","-vf",vf,
-                "-r","30","-c:v","libx264","-preset","ultrafast","-crf","23",
-                "-pix_fmt","yuv420p",str(video)]
+            args=[ff,"-hide_banner","-loglevel","error","-y",
+                  "-ss",str(seek),"-i",str(fetched[key]),
+                  "-loop","1","-framerate","30","-i",str(overlay),
+                  "-filter_complex",vf,"-map","[v]","-t",str(duration),
+                  "-an","-r","30","-c:v","libx264","-preset","ultrafast",
+                  "-crf","23","-pix_fmt","yuv420p",str(video)]
             subprocess.run(args,check=True)
             segments.append(video)
             print("Rendered shot",i+1,flush=True)
