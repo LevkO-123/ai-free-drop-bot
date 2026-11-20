@@ -17,8 +17,8 @@ def refresh(api=telegram, loader=load_state, persist=save_state):
         raise RuntimeError("Refusing to edit any other channel")
     state = loader()
     status = state.setdefault("branding", {})
-    if status.get("version", 0) >= 2:
-        print("AI FREE DROP branding v2 already applied.")
+    if status.get("version", 0) >= 3:
+        print("AI FREE DROP branding v3 already applied.")
         return
     if len(DESCRIPTION) > 255:
         raise ValueError("Telegram description limit exceeded")
@@ -30,9 +30,9 @@ def refresh(api=telegram, loader=load_state, persist=save_state):
     persist(state)
     api(token, "editMessageText", {"chat_id": CHANNEL, "message_id": message_id,
                                   "text": WELCOME, "parse_mode": "HTML"})
-    status["version"] = 2
+    status["version"] = 3
     persist(state)
-    print("Channel description and existing pinned welcome updated to v2.")
+    print("Channel description and existing pinned welcome updated to v3.")
 
 
 if __name__ == "__main__":
