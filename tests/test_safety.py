@@ -15,6 +15,8 @@ ATOM = b'''<?xml version="1.0" encoding="utf-8"?>
     <link rel="alternate" href="https://evil.example/claim"/></entry>
   <entry><title>Version 1.2 rc1</title><updated>2026-11-19T21:00:00Z</updated>
     <link rel="alternate" href="https://github.com/ollama/ollama/releases/tag/v1.2-rc1"/></entry>
+  <entry><title>v0.40.17</title><updated>2026-11-19T21:00:00Z</updated>
+    <link rel="alternate" href="https://github.com/ollama/ollama/releases/tag/v0.40.17-rc2"/></entry>
 </feed>'''
 
 
