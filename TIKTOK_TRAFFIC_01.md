@@ -45,3 +45,7 @@ Original cartoon slideshow was rejected by the owner. A second video must use re
 ## Cinematic render second attempt
 
 First build downloaded all three verified free moving-footage sources successfully but bundled ffmpeg had no `drawtext` filter. Replaced filter-based typography with a transparent Pillow-designed overlay. Second build is the final scoped retry before root-cause reassessment; TikTok stays unpublished.
+
+## QA of final cinematic video
+
+The 13.1-second, 14.5 MB licensed-car-footage cut rendered and passed source/MP4 checks. Extract 8 frames from that exact exported file to check readability, video motion framing and CTA before any public TikTok posting.
