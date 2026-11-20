@@ -4,6 +4,8 @@
 
 **Get new AI release updates and workflow ideas → [Subscribe on Telegram](https://t.me/AIFREEDROP).**
 
+**Browse the automatically updated [AI release archive](DROPS.md) or its [Atom feed](feed.xml).**
+
 Independent Telegram channel automation for [@AIFREEDROP](https://t.me/AIFREEDROP).
 
 - Curated updates from official open-source AI release feeds
