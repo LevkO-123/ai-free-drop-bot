@@ -1,3 +1,5 @@
+import contextlib
+import io
 import datetime as dt
 import os
 import pathlib
@@ -21,11 +23,13 @@ class SubscriberCountTests(unittest.TestCase):
              patch.object(bot, "fetch_candidates", return_value=[]), \
              patch.object(bot, "choose_post", return_value=None), \
              patch.object(bot, "telegram", return_value=7) as tg:
-            self.assertEqual(bot.run(now=NOW), 0)
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(bot.run(now=NOW), 0)
             self.assertEqual(state["counts"], [{"date": "2026-11-19", "subscribers": 7}])
             tg.assert_called_once_with("dummy", "getChatMemberCount", {"chat_id": "@AIFREEDROP"})
             # Multiple runs on the same day must not inflate history.
-            bot.run(now=NOW + dt.timedelta(hours=1))
+            with contextlib.redirect_stdout(io.StringIO()):
+                bot.run(now=NOW + dt.timedelta(hours=1))
             self.assertEqual(len(state["counts"]), 1)
             tg.assert_called_once()
 
