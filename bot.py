@@ -202,7 +202,7 @@ def run(*, dry_run=False, now=None):
         save_state(state)
         print("Posted:", item["project"], item["id"])
     today = now.date().isoformat()
-    if not dry_run and now.hour >= 20 and not any(x.get("date") == today for x in state["counts"]):
+    if not dry_run and not any(x.get("date") == today for x in state["counts"]):
         try:
             count = telegram(token, "getChatMemberCount", {"chat_id": channel})
             state["counts"].append({"date": today, "subscribers": int(count)})
