@@ -32,3 +32,12 @@ The first one-time render found no system ffmpeg on the GitHub runner. The secon
 ## Creative direction v2
 
 Original cartoon slideshow was rejected by the owner. A second video must use real cinematic car footage, faster edits, fewer words, stronger contrast and automotive-first relevance. Pexels stock clips are under the free Pexels license; each source URL must be checked before use. No posting until the revised creative is accepted.
+
+## Cinematic video v2 — user-review only
+
+- **Previous video rejected:** cartoon car, large static slides; do not post or reuse.
+- **Creative:** real licensed Pexels moving luxury-car footage, dark film-grade, punchy 1.6–2.7 second cuts, minimal bold typography, original generated beat.
+- **Voice of brand:** VAULTIX remains cars/luxury/mindset; AI FREE DROP is a utility referral, not a forced rebrand.
+- **CTA:** Telegram @AIFREEDROP. Verify that the Telegram channel delivers copy-ready prompts.
+- **Source license:** https://www.pexels.com/legal-pages/license/
+- **No TikTok publication without explicit preview approval and creator-selected privacy/music settings.**
