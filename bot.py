@@ -35,14 +35,18 @@ SOURCES = (
     ("langgenius/dify", "Dify", "AI workflows and applications"),
 )
 TIPS = (
-    ("Run AI locally", "A small locally-run model is often the best first experiment. Measure RAM use and speed before downloading larger models.", "https://github.com/ollama/ollama"),
-    ("Avoid accidental AI bills", "Check whether your AI interface uses an online API, even if its UI runs locally. Verify endpoints and price plans before connecting a credit card.", "https://github.com/open-webui/open-webui"),
-    ("Save a reusable workflow", "Record the model version, prompt, sample input and output. Repeat the same test after each update.", "https://github.com/Comfy-Org/ComfyUI"),
-    ("Know your AI licenses", "An open-source app and its downloadable model weights can have different licenses. Review both before commercial use.", "https://huggingface.co/docs/hub/repositories-licenses"),
-    ("Compare one task", "Test two models with the same prompt and real task. Check answer accuracy and speed, not just a benchmark ranking.", "https://github.com/huggingface/transformers"),
-    ("Keep a human review step", "Before letting a workflow send messages or change data, test drafts and require approval until the results prove reliable.", "https://github.com/langgenius/dify"),
-    ("Test before upgrading", "Save one representative prompt and output before upgrading an AI tool. Re-run it afterward and compare behavior.", "https://github.com/ggml-org/llama.cpp"),
-    ("Protect private information", "Before uploading a document to a chatbot, check its provider, retention terms and whether the model runs locally.", "https://github.com/open-webui/open-webui"),
+    ("Turn messy notes into a plan", "You are my operations assistant. Turn the notes below into: (1) a concise summary, (2) 5 prioritized actions, (3) deadlines marked UNKNOWN unless provided, and (4) questions I must answer. Notes: [PASTE NOTES]", "https://help.openai.com/en/articles/4936848-how-do-i-create-a-good-prompt-for-an-ai-model"),
+    ("Write a message that gets a reply", "Rewrite this message so a busy person wants to respond. Keep it under 70 words, human and polite. Include one simple question. Don't invent details. Message: [PASTE TEXT]", "https://help.openai.com/en/articles/4936848-how-do-i-create-a-good-prompt-for-an-ai-model"),
+    ("Learn anything in 15 minutes", "Teach me [TOPIC] in plain English. Start with a real-life analogy, then explain 3 key concepts, one common mistake and a 5-question mini quiz. Adapt to a beginner.", "https://help.openai.com/en/articles/4936848-how-do-i-create-a-good-prompt-for-an-ai-model"),
+    ("Make a smarter purchasing decision", "Compare [OPTION A] and [OPTION B] for my needs: [NEEDS]. Use a decision table with strengths, weaknesses, total cost factors and unknowns. Do not invent current prices. End with one recommendation and why.", "https://help.openai.com/en/articles/4936848-how-do-i-create-a-good-prompt-for-an-ai-model"),
+    ("Create a week of useful content", "Create 7 non-clickbait content ideas for [NICHE] aimed at [AUDIENCE]. Each idea needs a scroll-stopping opening, one useful takeaway and one honest CTA. Avoid repeating angles.", "https://help.openai.com/en/articles/4936848-how-do-i-create-a-good-prompt-for-an-ai-model"),
+    ("Clean up your to-do list", "I have 90 minutes and these tasks: [TASKS]. Rank them by urgency and likely impact. Give me a realistic schedule with breaks and a clear first step. Ask for one missing fact only if essential.", "https://help.openai.com/en/articles/4936848-how-do-i-create-a-good-prompt-for-an-ai-model"),
+    ("Diagnose a software error", "Act as a careful debugger. Given this error [PASTE ERROR], list 3 likely causes, the safest test for each, and how to reverse each test. Do not claim a fix until evidence supports it.", "https://help.openai.com/en/articles/4936848-how-do-i-create-a-good-prompt-for-an-ai-model"),
+    ("Turn facts into a useful table", "Turn the following raw information into a clean Markdown table with columns [COLUMNS]. Keep units consistent. If a value is missing, write UNKNOWN. Never manufacture rows. Data: [PASTE DATA]", "https://help.openai.com/en/articles/4936848-how-do-i-create-a-good-prompt-for-an-ai-model"),
+    ("Make a better image prompt", "Create a detailed original image-generation prompt for [IDEA]. Specify subject, environment, framing, lens feel, lighting, colors, materials and avoidable visual errors. Keep it usable in a single text prompt.", "https://help.openai.com/en/articles/4936848-how-do-i-create-a-good-prompt-for-an-ai-model"),
+    ("Draft a respectful price negotiation", "Help negotiate [ITEM OR SERVICE] at [ASKING PRICE]. Give me a short, respectful offer message backed only by facts I provide. Do not claim competing offers I do not have. Facts: [FACTS].", "https://help.openai.com/en/articles/4936848-how-do-i-create-a-good-prompt-for-an-ai-model"),
+    ("Turn feedback into a better product", "Analyze this customer feedback: [PASTE FEEDBACK]. Separate facts from opinions. Cluster issues, rank by frequency and severity, and suggest 3 small experiments with success metrics.", "https://help.openai.com/en/articles/4936848-how-do-i-create-a-good-prompt-for-an-ai-model"),
+    ("Check AI claims before sharing", "Fact-check the following AI-related claim: [PASTE CLAIM]. Identify exactly what needs verification, suggest primary sources to check, and label anything you cannot confirm. Do not invent citations or dates.", "https://help.openai.com/en/articles/4936848-how-do-i-create-a-good-prompt-for-an-ai-model"),
 )
 
 
@@ -154,13 +158,13 @@ def choose_post(items, state, now):
         if item["project"] in most_recent and now - most_recent[item["project"]] < dt.timedelta(hours=22):
             continue
         candidates.append(item)
+    tip_today = any(p["id"].startswith("tip-") for p in recent)
+    if not tip_today and not recent:
+        for i, (title, body, url) in enumerate(TIPS):
+            if "tip-" + str(i) not in state["tips"]:
+                return {"id": "tip-" + str(i), "project": "AI Workflow", "title": title, "body": body, "url": url}
     if candidates:
         return max(candidates, key=lambda item: item["updated"])
-    if any(p["id"].startswith("tip-") for p in recent):
-        return None
-    for i, (title, body, url) in enumerate(TIPS):
-        if "tip-" + str(i) not in state["tips"]:
-            return {"id": "tip-" + str(i), "project": "AI Workflow", "title": title, "body": body, "url": url}
     return None
 
 
@@ -169,7 +173,11 @@ def format_message(item):
     url = escape(item["url"], quote=True)
     title = escape(item["title"])
     if item["id"].startswith("tip-"):
-        return f"💡 <b>FREE AI WORKFLOW</b>\n\n<b>{title}</b>\n\n{escape(item['body'])}\n\n🔎 <a href=\"{url}\">Official source</a>\n\n#AITools #AIWorkflow"
+        return (f"🎁 <b>FREE AI PROMPT — SAVE THIS</b>\n\n<b>{title}</b>\n\n"
+                f"<pre>{escape(item['body'])}</pre>\n\n"
+                "📌 Save it, try it, and share with someone who needs it.\n"
+                f"📚 <a href=\"{url}\">Official prompt-writing guide</a>\n\n"
+                "#FreeAI #AIPrompts")
     return (f"🧰 <b>OPEN-SOURCE AI RELEASE</b>\n\n<b>{escape(item['project'])} — {title}</b>\n\n"
             f"Useful for: {escape(item['use'])}.\n\n🔗 <a href=\"{url}\">Official release notes</a>\n\n"
             "Software can be free to download while models, hosting or hardware still cost money.\n\n#AITools #OpenSource")
