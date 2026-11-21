@@ -17,12 +17,24 @@
       "date": "2026-11-20",
       "time": "2026-11-20T02:12:58+00:00",
       "project": "Ollama"
+    },
+    {
+      "id": "tip-0",
+      "date": "2026-11-21",
+      "time": "2026-11-21T01:29:50+00:00",
+      "project": "AI Workflow"
     }
   ],
-  "tips": [],
+  "tips": [
+    "tip-0"
+  ],
   "counts": [
     {
       "date": "2026-11-20",
+      "subscribers": 2
+    },
+    {
+      "date": "2026-11-21",
       "subscribers": 2
     }
   ],
@@ -39,6 +51,10 @@
   "observations": [
     {
       "time": "2026-11-20T02:37:30+00:00",
+      "members": 2
+    },
+    {
+      "time": "2026-11-21T01:29:59+00:00",
       "members": 2
     }
   ],
