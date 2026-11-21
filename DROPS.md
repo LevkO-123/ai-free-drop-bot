@@ -7,6 +7,8 @@ Every release below links directly to its publisher on GitHub. Open-source softw
 
 ## Latest release links
 
+- **llama.cpp** — [b12608](https://github.com/ggml-org/llama.cpp/releases/tag/b12608) · 2026-11-21
+
 - **Ollama** — [v0.40.17-rc2](https://github.com/ollama/ollama/releases/tag/v0.40.17-rc2) · 2026-11-20
 
 - **ComfyUI** — [v0.46.1](https://github.com/Comfy-Org/ComfyUI/releases/tag/v0.46.1) · 2026-11-20
