@@ -29,6 +29,12 @@
       "date": "2026-11-21",
       "time": "2026-11-21T14:37:26+00:00",
       "project": "llama.cpp"
+    },
+    {
+      "id": "https://github.com/ollama/ollama/releases/tag/v0.40.17",
+      "date": "2026-11-21",
+      "time": "2026-11-21T20:54:02+00:00",
+      "project": "Ollama"
     }
   ],
   "tips": [

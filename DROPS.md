@@ -7,6 +7,8 @@ Every release below links directly to its publisher on GitHub. Open-source softw
 
 ## Latest release links
 
+- **Ollama** — [v0.40.17](https://github.com/ollama/ollama/releases/tag/v0.40.17) · 2026-11-21
+
 - **llama.cpp** — [b12608](https://github.com/ggml-org/llama.cpp/releases/tag/b12608) · 2026-11-21
 
 - **Ollama** — [v0.40.17-rc2](https://github.com/ollama/ollama/releases/tag/v0.40.17-rc2) · 2026-11-20
