@@ -41,6 +41,14 @@ class PublisherTests(unittest.TestCase):
             item = {"id": "tip-" + str(i), "title": title, "body": body, "url": url}
             self.assertLessEqual(len(bot.format_message(item)), 4096)
 
+    def test_car_kit_prompt_link_is_labelled_honestly(self):
+        title, body, url = bot.TIPS[3]
+        self.assertIn("CAR_BUYER_AI_KIT.md", url)
+        html = bot.format_message({"id": "tip-3", "title": title, "body": body, "url": url})
+        self.assertIn("Free used-car AI kit</a>", html)
+        self.assertNotIn("Official prompt-writing guide</a>", html)
+        self.assertLessEqual(len(html), 4096)
+
     def test_old_release_uses_evergreen_tip(self):
         state = {"posted": [], "tips": [], "counts": [], "branding": {}}
         self.assertEqual(bot.choose_post([candidate(at=NOW - dt.timedelta(days=12))], state, NOW)["id"], "tip-0")
