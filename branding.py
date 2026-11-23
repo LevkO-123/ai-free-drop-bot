@@ -9,20 +9,22 @@ import uuid
 from avatar import render
 
 TITLE = "AI FREE DROP | Tools & Workflows"
-DESCRIPTION = "Free AI tools, copy-and-paste prompts, practical workflows, official open-source releases and clear cost notes. New practical ideas regularly. Independent channel with original examples and verified links. No fake deals, spam or income promises."
+DESCRIPTION = "Free AI checklists for buying used cars, copy-paste prompts, practical AI workflows and source-linked tools. Start with the free car buyer kit. No fake giveaways or income promises."
 WELCOME = (
-    "🎁 <b>FREE AI PROMPT PACK — START HERE</b>\n\n"
-    "Welcome to <b>AI FREE DROP</b>: useful AI tools you can actually try.\n\n"
-    "✅ <b>25 free copy-and-paste AI prompts</b> for cars, work, study and everyday tasks\n"
-    "🧰 Curated open-source tools with direct official source links\n"
-    "🔎 Honest notes about free software versus paid APIs or hardware\n\n"
-    "Start with the next prompt below, save it, and forward it to someone who needs it.\n"
-    "🎁 Free 25-prompt pack: https://github.com/LevkO-123/ai-free-drop-bot/blob/main/FREE_PROMPTS.md\n"
-    "Open-source tools: https://github.com/LevkO-123/ai-free-drop-bot/blob/main/CATALOG.md\n\n"
-    "No fake airdrops, earnings guarantees or unsolicited messages.\n\n"
-    "#FreeAI #AIPrompts #AITools"
+    "🎁 <b>START HERE — FREE USED-CAR AI KIT</b>\n"
+    "\n"
+    "🚗 Buying a used car? Get inspection questions, compare cars, challenge seller claims and understand repair quotes.\n"
+    "\n"
+    "👉 <a href=\"https://github.com/LevkO-123/ai-free-drop-bot/blob/main/CAR_BUYER_AI_KIT.md\">OPEN THE FREE KIT — no signup</a>\n"
+    "\n"
+    "🧠 Want more? <a href=\"https://github.com/LevkO-123/ai-free-drop-bot/blob/main/FREE_PROMPTS.md\">25 free copy-ready AI prompts</a> plus official AI tool updates.\n"
+    "\n"
+    "Try one prompt. Save the result. Share this channel with someone shopping for a car.\n"
+    "\n"
+    "AI cannot physically inspect a vehicle. Always verify important claims. No fake freebies or guaranteed income.\n"
+    "\n"
+    "#CarBuying #FreeAI #AIPrompts"
 )
-
 
 
 def upload_avatar(token, channel, *, image=None):
