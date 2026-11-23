@@ -1,5 +1,9 @@
 # AI FREE DROP — Telegram Autopilot
 
+**Start here: [FREE Used-Car AI Buying Kit — 5 copy-ready tools + 60-second checklist](CAR_BUYER_AI_KIT.md).** 🚗
+
+**Watch car edits on TikTok? This kit is the practical resource behind our car-buying posts.** Free, no sign-up.
+
 **25 copy-ready AI prompts for cars, work, creativity, learning and safe automation → [Use the free prompt pack](FREE_PROMPTS.md).**
 
 **Create a cinematic car video from one photo with a source-verified local AI workflow → [Read the practical guide](CAR_IMAGE_TO_AI_VIDEO.md).**
