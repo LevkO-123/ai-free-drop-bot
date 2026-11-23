@@ -173,10 +173,11 @@ def format_message(item):
     url = escape(item["url"], quote=True)
     title = escape(item["title"])
     if item["id"].startswith("tip-"):
+        resource_label = "Free used-car AI kit" if "CAR_BUYER_AI_KIT.md" in item["url"] else "Official prompt-writing guide"
         return (f"🎁 <b>FREE AI PROMPT — SAVE THIS</b>\n\n<b>{title}</b>\n\n"
                 f"<pre>{escape(item['body'])}</pre>\n\n"
                 "📌 Save it, try it, and share with someone who needs it.\n"
-                f"📚 <a href=\"{url}\">Official prompt-writing guide</a>\n\n"
+                f"📚 <a href=\"{url}\">{escape(resource_label)}</a>\n\n"
                 "#FreeAI #AIPrompts")
     return (f"🧰 <b>OPEN-SOURCE AI RELEASE</b>\n\n<b>{escape(item['project'])} — {title}</b>\n\n"
             f"Useful for: {escape(item['use'])}.\n\n🔗 <a href=\"{url}\">Official release notes</a>\n\n"
