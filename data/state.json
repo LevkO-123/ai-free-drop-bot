@@ -86,7 +86,8 @@
     "last_pin_attempt": "2026-11-20",
     "pinned": true,
     "description_v2": true,
-    "version": 3
+    "version": 4,
+    "description_v4": true
   },
   "observations": [
     {
