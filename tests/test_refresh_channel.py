@@ -8,29 +8,37 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 import refresh_channel
 
 
+def recording_api(requests):
+    def api(_token, method, payload):
+        requests.append((method, payload))
+        if method == "getChat":
+            return {"type": "channel", "username": "AIFREEDROP"}
+        return True
+    return api
+
+
 class RefreshTests(unittest.TestCase):
     def test_only_revises_existing_welcome_message(self):
         state={"branding":{"welcome_id":3, "profile_done":True, "pinned":True}}
         requests=[]
         with patch.dict(os.environ,{"TELEGRAM_BOT_TOKEN":"test-token",
                                      "TELEGRAM_CHANNEL":"@AIFREEDROP"}):
-            refresh_channel.refresh(api=lambda _t,m,p:requests.append((m,p)),
+            refresh_channel.refresh(api=recording_api(requests),
                                     loader=lambda:state, persist=lambda s:None)
-        self.assertEqual([x[0] for x in requests],["setChatDescription","editMessageText"])
-        self.assertEqual(requests[1][1]["message_id"],3)
-        self.assertEqual(state["branding"]["version"],3)
+        self.assertEqual([x[0] for x in requests],["getChat","setChatDescription","editMessageText"])
+        self.assertEqual(requests[2][1]["message_id"],3)
+        self.assertEqual(state["branding"]["version"],4)
 
     def test_existing_description_is_not_sent_again(self):
-        state = {"branding": {"welcome_id": 3, "description_v2": True,
-                              "profile_done": True, "version": 2}}
+        state = {"branding": {"welcome_id": 3, "description_v4": True,
+                              "profile_done": True, "version": 3}}
         requests = []
         with patch.dict(os.environ, {"TELEGRAM_BOT_TOKEN": "test-token",
                                      "TELEGRAM_CHANNEL": "@AIFREEDROP"}):
-            refresh_channel.refresh(api=lambda _t, method, payload:
-                                    requests.append((method, payload)),
+            refresh_channel.refresh(api=recording_api(requests),
                                     loader=lambda: state, persist=lambda s: None)
-        self.assertEqual([method for method, _ in requests], ["editMessageText"])
-        self.assertEqual(state["branding"]["version"], 3)
+        self.assertEqual([method for method, _ in requests], ["getChat", "editMessageText"])
+        self.assertEqual(state["branding"]["version"], 4)
 
     def test_no_duplicate_welcome_when_message_id_unknown(self):
         with patch.dict(os.environ,{"TELEGRAM_BOT_TOKEN":"test-token",
