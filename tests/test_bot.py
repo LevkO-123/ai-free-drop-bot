@@ -108,6 +108,17 @@ class PublisherTests(unittest.TestCase):
                  patch.object(bot, "telegram", side_effect=AssertionError("live API called")):
                 self.assertEqual(bot.run(dry_run=True, now=NOW), 0)
 
+    def test_confirmed_post_has_direct_telegram_url(self):
+        state = {"posted": [], "tips": [], "counts": [{"date": NOW.date().isoformat(), "subscribers": 2}], "branding": {}}
+        with patch.dict("os.environ", {"TELEGRAM_BOT_TOKEN": "fake", "TELEGRAM_CHANNEL": "@AIFREEDROP"}), \
+             patch.object(bot, "load_state", return_value=state), \
+             patch.object(bot, "save_state"), \
+             patch.object(bot, "configure_channel"), \
+             patch.object(bot, "fetch_candidates", return_value=[]), \
+             patch.object(bot, "telegram", return_value={"message_id": 71}):
+            self.assertEqual(bot.run(now=NOW), 0)
+        self.assertEqual(state["posted"][0]["post_url"], "https://t.me/AIFREEDROP/71")
+
     def test_missing_token_rejects_live_run(self):
         with patch.dict("os.environ", {"TELEGRAM_BOT_TOKEN": "", "TELEGRAM_CHANNEL": "@AIFREEDROP"}):
             with self.assertRaises(RuntimeError):

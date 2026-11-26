@@ -243,8 +243,11 @@ def run(*, dry_run=False, now=None):
     elif dry_run:
         print("DRY RUN, no changes:\n" + format_message(item))
     else:
-        telegram(token, "sendMessage", {"chat_id": channel, "text": format_message(item), "parse_mode": "HTML"})
-        state["posted"].append({"id": item["id"], "date": now.date().isoformat(), "time": iso(now), "project": item["project"]})
+        message = telegram(token, "sendMessage", {"chat_id": channel, "text": format_message(item), "parse_mode": "HTML"})
+        if not isinstance(message, dict) or not isinstance(message.get("message_id"), int) or message["message_id"] <= 0:
+            raise RuntimeError("Telegram did not confirm a message ID; inspect channel before retrying")
+        message_id = message["message_id"]
+        state["posted"].append({"id": item["id"], "date": now.date().isoformat(), "time": iso(now), "project": item["project"], "message_id": message_id, "post_url": f"https://t.me/{channel.lstrip(chr(64))}/{message_id}"})
         if item["id"].startswith("tip-"):
             state["tips"].append(item["id"])
         save_state(state)
