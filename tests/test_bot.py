@@ -61,9 +61,29 @@ class PublisherTests(unittest.TestCase):
 
     def test_daily_cap(self):
         state = {"posted": [{"id": str(i), "date": NOW.date().isoformat(),
-                             "time": bot.iso(NOW), "project": "Other"} for i in range(3)],
+                             "time": bot.iso(NOW), "project": "Other"} for i in range(bot.MAX_POSTS)],
                  "tips": [], "counts": [], "branding": {}}
         self.assertIsNone(bot.choose_post([candidate()], state, NOW))
+
+    def test_five_daily_slots_use_unique_tips_when_no_release_available(self):
+        state = {"posted": [], "tips": [], "counts": [], "branding": {}}
+        selected = []
+        for _ in range(5):
+            item = bot.choose_post([], state, NOW)
+            self.assertIsNotNone(item)
+            selected.append(item["id"])
+            state["posted"].append({"id": item["id"], "date": NOW.date().isoformat(),
+                                    "time": bot.iso(NOW), "project": item["project"]})
+            state["tips"].append(item["id"])
+        self.assertEqual(len(set(selected)), 5)
+        self.assertEqual(bot.MAX_POSTS, 5)
+        self.assertIsNone(bot.choose_post([], state, NOW))
+
+    def test_no_duplicate_tip_when_posted_but_missing_from_tip_history(self):
+        state = {"posted": [{"id": "tip-0", "date": NOW.date().isoformat(),
+                             "time": bot.iso(NOW), "project": "AI Workflow"}],
+                 "tips": [], "counts": [], "branding": {}}
+        self.assertEqual(bot.choose_post([], state, NOW)["id"], "tip-1")
 
     def test_html_escaping(self):
         item = candidate(name="<script>alert(1)</script>")

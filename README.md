@@ -17,7 +17,7 @@
 Independent Telegram channel automation for [@AIFREEDROP](https://t.me/AIFREEDROP).
 
 - Curated updates from official open-source AI release feeds
-- Up to three source-linked Telegram posts per UTC day; no unverified freebies or income claims
+- Up to five source-linked Telegram posts per UTC day; no unverified freebies or income claims
 - Daily deduplication and optional cross-posting
 - English-language channel profile and pinned welcome post
 - Zero paid dependencies and no unwanted DMs
@@ -42,6 +42,8 @@ Existing REVLINE and Black Swan repos are separate and untouched.
 The live publisher can be exercised using a commit message containing `[publish-live]`. A workflow marked successful does not alone prove Telegram publication; inspect the publish step and `data/state.json`. Never store the bot token in source control.
 
 ## Growth measurement
+
+The growth schedule provides five daily publication slots, with up to two official release posts and a reserve of unique practical car-buyer prompts. A scheduled run is not a guarantee of delivery; verify Telegram state and workflow results.
 
 - `data/state.json` includes the real subscriber count measured by the Telegram Bot API (one snapshot per UTC date).
 - Channel growth is calculated from actual consecutive snapshots, not estimated from post views.

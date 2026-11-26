@@ -11,7 +11,7 @@ on:
         type: boolean
         default: true
   schedule:
-    - cron: "17 6,11,15,20 * * *"
+    - cron: "17 2,14,17,20,23 * * *"
 
 permissions:
   contents: write
@@ -259,8 +259,8 @@ jobs:
         shell: bash
         run: |
           if [[ -z "$TELEGRAM_BOT_TOKEN" ]]; then
-            echo "::warning::NOT LIVE: configure a freshly rotated TELEGRAM_BOT_TOKEN in repository secrets."
-            exit 0
+            echo "::error::NOT LIVE: configure a freshly rotated TELEGRAM_BOT_TOKEN in repository secrets."
+            exit 1
           fi
           if [[ -z "$TELEGRAM_CHANNEL" ]]; then
             export TELEGRAM_CHANNEL="@AIFREEDROP"
