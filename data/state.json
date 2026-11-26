@@ -59,6 +59,14 @@
       "date": "2026-11-26",
       "time": "2026-11-26T21:19:14+00:00",
       "project": "AI Workflow"
+    },
+    {
+      "id": "https://github.com/ggml-org/llama.cpp/releases/tag/b12785",
+      "date": "2026-11-26",
+      "time": "2026-11-26T21:41:06+00:00",
+      "project": "llama.cpp",
+      "message_id": 17,
+      "post_url": "https://t.me/AIFREEDROP/17"
     }
   ],
   "tips": [
