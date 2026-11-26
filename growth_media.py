@@ -4,6 +4,8 @@ No AI-generation claims, no new downloads, no paid APIs. Render only; no uploads
 from pathlib import Path
 import json, subprocess, tempfile, textwrap
 from PIL import Image, ImageDraw, ImageFont
+import imageio_ffmpeg
+FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 
 BASE = Path(__file__).resolve().parent
 OUT = BASE / "media" / "vaultix_growth"
@@ -83,15 +85,19 @@ def main():
             # Three pages on unique moving background; no borrowed audio.
             filters="[0:v]scale=720:1280:force_original_aspect_ratio=increase,crop=720:1280,setsar=1,fps=24,eq=brightness=-0.17[v];[v][1:v]overlay=enable='between(t,0,3.49)'[a];[a][2:v]overlay=enable='between(t,3.5,7.49)'[b];[b][3:v]overlay=enable='gte(t,7.5)'[out]"
             out=OUT/f"{slug}.mp4"
-            run(["ffmpeg","-hide_banner","-loglevel","error","-y","-stream_loop","-1","-i",str(source),"-i",str(tmp/"overlay0.png"),"-i",str(tmp/"overlay1.png"),"-i",str(tmp/"overlay2.png"),"-filter_complex",filters,"-map","[out]","-an","-t","12","-c:v","libx264","-pix_fmt","yuv420p","-preset","fast","-crf","24","-movflags","+faststart",str(out)])
-            p=json.loads(subprocess.check_output(["ffprobe","-v","error","-show_streams","-show_format","-of","json",str(out)]))
-            v=p["streams"][0]
-            assert (v["width"],v["height"])==(720,1280)
-            assert 11.9<=float(p["format"]["duration"])<=12.1
+            run([FFMPEG,"-hide_banner","-loglevel","error","-y","-stream_loop","-1","-i",str(source),"-i",str(tmp/"overlay0.png"),"-i",str(tmp/"overlay1.png"),"-i",str(tmp/"overlay2.png"),"-filter_complex_threads","1","-filter_complex",filters,"-map","[out]","-an","-t","12","-c:v","libx264","-pix_fmt","yuv420p","-threads","2","-preset","fast","-crf","24","-movflags","+faststart",str(out)])
+            reader=imageio_ffmpeg.read_frames(str(out))
+            try:
+                meta=next(reader)
+                assert meta["size"]==(720,1280)
+                assert 11.9<=float(meta["duration"])<=12.1
+                assert len(next(reader))==720*1280*3
+            finally:
+                reader.close()
             assert 50_000<out.stat().st_size<15_000_000
-            print("QA PASS", slug, out.stat().st_size, "720x1280",p["format"]["duration"])
+            print("QA PASS", slug, out.stat().st_size, "720x1280",meta["duration"])
             if slug=="listing":
-                run(["ffmpeg","-hide_banner","-loglevel","error","-y","-ss","5","-i",str(out),"-frames:v","1",str(OUT/"listing_preview.jpg")])
+                run([FFMPEG,"-hide_banner","-loglevel","error","-y","-ss","5","-i",str(out),"-frames:v","1",str(OUT/"listing_preview.jpg")])
 
 if __name__=="__main__":
     main()
