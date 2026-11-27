@@ -98,7 +98,10 @@ def verified_preview(video, at, page):
         red, green, blue = picture.getpixel((x, 332))
         bright_teal = green > 175 and blue > 120 and green > red + 60
         if bright_teal != (current <= page):
-            raise ValueError(f"{video.name}: wrong overlay progress at {at}s")
+            raise ValueError(
+                f"{video.name}: wrong lesson progress at {at}s, x={x}: "
+                f"RGB={red, green, blue}, expected teal={current <= page}"
+            )
     return picture
 
 def main():
@@ -113,21 +116,20 @@ def main():
             tmp=Path(td)
             for p in range(3):
                 overlay(card,p,tmp/f"overlay{p}.png")
-            # A single sparse PNG timeline avoids decoding and compositing three
-            # full-length overlay streams. Framesync holds each card until the next.
-            cards = tmp / "cards.ffconcat"
-            cards.write_text(
-                "ffconcat version 1.0\n"
-                "file overlay0.png\nduration 3.5\n"
-                "file overlay1.png\nduration 4.0\n"
-                "file overlay2.png\nduration 4.5\n"
-                "file overlay2.png\n",
-                encoding="ascii",
-            )
+            # Reset each lesson section to zero before adding its static card.
+            # Frame boundaries at 24 fps keep the three cards at fixed durations.
             filters = (
-                "[0:v]setsar=1,fps=24,eq=brightness=-0.17[base];"
-                "[base][1:v]overlay=repeatlast=1[out]"
+                "[0:v]setsar=1,fps=24,eq=brightness=-0.17,split=3[v0][v1][v2];"
+                "[v0]trim=end_frame=84,setpts=PTS-STARTPTS[s0];"
+                "[v1]trim=start_frame=84:end_frame=180,setpts=PTS-STARTPTS[s1];"
+                "[v2]trim=start_frame=180:end_frame=288,setpts=PTS-STARTPTS[s2];"
+                "[s0][1:v]overlay[card0];[s1][2:v]overlay[card1];"
+                "[s2][3:v]overlay[card2];"
+                "[card0][card1][card2]concat=n=3:v=1:a=0[out]"
             )
+            overlays = []
+            for page in range(3):
+                overlays.extend(["-i", str(tmp / f"overlay{page}.png")])
             audio = (
                 ["-map", "0:a:0", "-af", "volume=0.55,afade=t=out:st=11:d=1",
                  "-c:a", "aac", "-b:a", "96k"] if slug in SCORED_SHORTS else ["-an"]
@@ -135,7 +137,7 @@ def main():
             run([
                 FFMPEG, "-hide_banner", "-loglevel", "error", "-y",
                 "-stream_loop", "-1", "-i", str(source),
-                "-f", "concat", "-i", str(cards),
+                *overlays,
                 "-filter_complex_threads", "1", "-filter_complex", filters,
                 "-map", "[out]", *audio, "-t", "12", "-c:v", "libx264",
                 "-pix_fmt", "yuv420p", "-threads", "2", "-preset", "veryfast",
