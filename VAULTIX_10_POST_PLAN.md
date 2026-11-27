@@ -89,3 +89,26 @@ Caption:
 ## Finished media QA
 
 All ten rendered MP4s were validated with real GitHub Actions run `44681127320` (success; ten files under `media/vaultix_series`). This scoped visual review extracts real frames from every final file before any vidIQ scheduling. No overlay, no generated cartoon cars, zero new paid media.
+
+## Nov 30 candidate posts: VAULTIX used-car buying test
+
+Proposed CT schedule for @vaultixstyle. Public visibility, comments on, original soundtrack retained, automatic music off. Pending creator approval. The stock footage in the buyer examples is credited in `promo_series.py`; the BMW film lists credits on YouTube.
+
+### 1. The cheaper car costs more
+
+2026-11-30T10:30:00-06:00 · [Preview](media/vaultix_growth/drive-away-price.mp4)
+
+> The cheaper sticker price cost $350 more in this example. Ask for the full written out-the-door price. Free buyer kit on Telegram: @AIFREEDROP. #UsedCars #CarBuying
+
+### 2. Message the seller before you drive
+
+2026-11-30T14:30:00-06:00 · [Preview](media/vaultix_growth/seller-screen.mp4)
+
+> Before you drive to see a used car, ask for the VIN, service records, and permission for an independent inspection. Copy the message in the video. Free checklist on Telegram: @AIFREEDROP. #UsedCarTips #CarShopping
+
+### 3. BMW: The Moment Before the Drive
+
+2026-11-30T18:30:00-06:00 · [Preview](https://www.youtube.com/shorts/Q612zrdGqpg)
+
+> One click and the BMW lights come alive. A nine-second night-drive film with its original score. Shopping for a used BMW? Free buyer kit on Telegram: @AIFREEDROP. #BMW #NightDrive #CarCinema
+
