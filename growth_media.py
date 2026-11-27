@@ -81,12 +81,13 @@ def overlay(card, page, out):
     im.save(out)
 
 def run(args):
-    subprocess.run(args,check=True,stdout=subprocess.DEVNULL)
+    subprocess.run(args,check=True,stdout=subprocess.DEVNULL,timeout=45)
 
 def verified_preview(video, at, page):
     frame = subprocess.check_output(
         [FFMPEG, "-hide_banner", "-loglevel", "error", "-i", str(video),
-         "-ss", str(at), "-frames:v", "1", "-f", "image2pipe", "-vcodec", "png", "-"]
+        "-ss", str(at), "-frames:v", "1", "-f", "image2pipe", "-vcodec", "png", "-"],
+        timeout=12,
     )
     with Image.open(BytesIO(frame)) as decoded:
         picture = decoded.convert("RGB")
@@ -103,6 +104,9 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     for card in CARDS:
         slug, src, *_=card
+        out=OUT/f"{slug}.mp4"
+        if slug not in ORIGINAL_AUDIO_SHORTS and out.is_file():
+            continue
         source=BASE/"media"/"vaultix_series"/src
         with tempfile.TemporaryDirectory() as td:
             tmp=Path(td)
@@ -112,15 +116,17 @@ def main():
             filters=(
                 "[0:v]scale=720:1280:force_original_aspect_ratio=increase,crop=720:1280,"
                 "setsar=1,fps=24,setpts=PTS-STARTPTS,eq=brightness=-0.17[v];"
-                "[v][1:v]overlay=enable='lt(t,3.5)'[a];"
-                "[a][2:v]overlay=enable='gte(t,3.5)*lt(t,7.5)'[b];"
-                "[b][3:v]overlay=enable='gte(t,7.5)'[out]"
+                "[1:v]tpad=stop_mode=clone:stop_duration=12[card1];"
+                "[2:v]tpad=stop_mode=clone:stop_duration=12[card2];"
+                "[3:v]tpad=stop_mode=clone:stop_duration=12[card3];"
+                "[v][card1]overlay=enable='lt(t,3.5)'[a];"
+                "[a][card2]overlay=enable='gte(t,3.5)*lt(t,7.5)'[b];"
+                "[b][card3]overlay=enable='gte(t,7.5)'[out]"
             )
-            out=OUT/f"{slug}.mp4"
             audio = ["-map","0:a:0","-af","volume=0.55,afade=t=out:st=11:d=1","-c:a","aac","-b:a","96k"] if slug in ORIGINAL_AUDIO_SHORTS else ["-an"]
             overlays = []
             for page in range(3):
-                overlays.extend(["-loop","1","-framerate","24","-i",str(tmp/f"overlay{page}.png")])
+                overlays.extend(["-framerate","24","-i",str(tmp/f"overlay{page}.png")])
             run([FFMPEG,"-hide_banner","-loglevel","error","-y","-stream_loop","-1","-i",str(source),*overlays,"-filter_complex_threads","1","-filter_complex",filters,"-map","[out]",*audio,"-t","12","-c:v","libx264","-pix_fmt","yuv420p","-threads","2","-preset","fast","-crf","24","-movflags","+faststart",str(out)])
             reader=imageio_ffmpeg.read_frames(str(out))
             try:
