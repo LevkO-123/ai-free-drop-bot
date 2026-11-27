@@ -16,13 +16,17 @@ PROFILE_DESCRIPTION = (
     "TikTok: https://www.tiktok.com/@vaultixstyle"
 )
 
+SALES_URL = (
+    "https://chornyilev.gumroad.com/l/xqfrfgk"
+    "?utm_source=telegram&utm_medium=social&utm_campaign=used_car_deal_sheet"
+)
 SALES_PIN = (
     "<b>VAULTIX | Compare used-car offers before you commit</b>\n\n"
     "Example: $13,950 + $1,450 in taxes and fees = $15,400. "
     "$14,100 + $950 = $15,050. The higher advertised price wins by $350.\n\n"
     "Ask each seller for the written, itemized out-the-door price. "
     "Keep trade-in and financing separate, and flag optional add-ons.\n\n"
-    '<a href="https://chornyilev.gumroad.com/l/xqfrfgk?utm_source=telegram&amp;utm_medium=social&amp;utm_campaign=used_car_deal_sheet">'
+    f'<a href="{SALES_URL}">'
     "Get the VAULTIX Used-Car Deal Sheet ($12.99)</a> to compare two quotes and save the result.\n\n"
     '<a href="https://github.com/LevkO-123/ai-free-drop-bot/blob/main/CAR_BUYER_AI_KIT.md">'
     "Open the free used-car buyer kit</a> for the inspection checklist and seller questions."
@@ -101,9 +105,8 @@ def refresh_sales_pin(api=telegram, loader=load_state):
     message_id = loader().get("branding", {}).get("welcome_id")
     if not isinstance(message_id, int) or message_id <= 0 or pinned.get("message_id") != message_id:
         raise RuntimeError("The original buyer kit is not the current pinned message")
-    expected_url = "https://chornyilev.gumroad.com/l/xqfrfgk?utm_source=telegram"
     for entity in pinned.get("entities", []):
-        if entity.get("url", "").startswith(expected_url):
+        if entity.get("url") == SALES_URL:
             print("VAULTIX sales link already present in the pinned buyer resource.")
             return
     updated = api(token, "editMessageText", {
@@ -111,7 +114,7 @@ def refresh_sales_pin(api=telegram, loader=load_state):
         "parse_mode": "HTML", "disable_web_page_preview": True,
     })
     if updated.get("message_id") != message_id or not any(
-        item.get("url", "").startswith(expected_url) for item in updated.get("entities", [])
+        item.get("url") == SALES_URL for item in updated.get("entities", [])
     ):
         raise RuntimeError("Telegram did not confirm the sales link on the pinned message")
     print(f"VAULTIX sales link confirmed: https://t.me/AIFREEDROP/{message_id}")
