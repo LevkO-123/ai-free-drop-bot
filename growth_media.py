@@ -1,4 +1,4 @@
-"""Render three original educational TikTok shorts from our licensed car edits.
+"""Render original educational TikTok shorts from our licensed car edits.
 No AI-generation claims, no new downloads, no paid APIs. Render only; no uploads.
 """
 from pathlib import Path
@@ -15,8 +15,12 @@ BOLD = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 CARDS = [
     ("listing", "vaultix_01.mp4", "BUYING A USED CAR?", "Check the listing before you drive.", "COPY THIS AI PROMPT", "Review this listing. Separate seller claims, missing evidence and questions I should ask.", "EXAMPLE CHECKLIST", ["Title and VIN", "Service records", "Independent inspection"]),
     ("quote", "vaultix_02.mp4", "REPAIR QUOTE CONFUSING?", "Turn it into questions, not guesses.", "COPY THIS AI PROMPT", "Explain these repair quote items. Flag unclear labor, parts and warranty. Don't invent prices.", "EXAMPLE CHECKLIST", ["Parts and labor", "Diagnostic evidence", "Written warranty"]),
-    ("compare", "vaultix_03.mp4", "TWO CARS. ONE BUDGET.", "Compare facts before deciding.", "COPY THIS AI PROMPT", "Compare these two listings using only documented facts. Flag unknowns and inspection priorities.", "EXAMPLE CHECKLIST", ["Known costs", "Missing history", "What to inspect"])
+    ("compare", "vaultix_03.mp4", "TWO CARS. ONE BUDGET.", "Compare facts before deciding.", "COPY THIS AI PROMPT", "Compare these two listings using only documented facts. Flag unknowns and inspection priorities.", "EXAMPLE CHECKLIST", ["Known costs", "Missing history", "What to inspect"]),
+    ("drive-away-price", "vaultix_04.mp4", "THE CHEAPER CAR COSTS MORE", "A two-offer example.", "WRITTEN PRICE EXAMPLE", "A: $13,950 + $1,450 = $15,400. B: $14,100 + $950 = $15,050.", "BEFORE YOU COMPARE", ["Ask for the full price", "Separate optional extras", "Offer B is $350 lower"]),
+    ("seller-screen", "vaultix_06.mp4", "BEFORE YOU DRIVE AN HOUR", "Send this one message.", "COPY THIS TO THE SELLER", "Could you share the VIN and service records? Are you open to an independent inspection before purchase?", "COMPARE THE REPLIES", ["VIN provided?", "Records available?", "Inspection welcome?"]),
+    ("service-records", "vaultix_08.mp4", "RECENT SERVICE? ASK FOR PROOF", "One claim. Three checks.", "WHEN THE AD SAYS SERVICED", "Ask for the invoice. Match its date, mileage and listed work to the seller's claim.", "CHECK THE INVOICE", ["Work actually performed", "Mileage and date", "Any follow-up noted?"]),
 ]
+ORIGINAL_AUDIO_SHORTS = {"drive-away-price", "seller-screen", "service-records"}
 
 def font(size, bold=False):
     return ImageFont.truetype(BOLD if bold else FONT, size)
@@ -62,7 +66,10 @@ def overlay(card, page, out):
         y=wrapped(d,sample_title,390,32,(110,235,204,255),True)
         for check in checks:
             y=wrapped(d,"- "+check,y+18,35,white)
-        y=wrapped(d,"AI cannot inspect a car.",y+27,24,muted)
+        takeaway = "Example for comparison." if slug == "drive-away-price" else "Verify before you buy."
+        if slug not in ORIGINAL_AUDIO_SHORTS:
+            takeaway = "AI cannot inspect a car."
+        y=wrapped(d,takeaway,y+27,24,muted)
     if y>825:
         raise ValueError("Text overlaps CTA")
     d.line((60,849,600,849),fill=(70,85,92,255),width=2)
@@ -82,22 +89,25 @@ def main():
             tmp=Path(td)
             for p in range(3):
                 overlay(card,p,tmp/f"overlay{p}.png")
-            # Three pages on unique moving background; no borrowed audio.
+            # The source edits include original percussion composed for VAULTIX.
             filters="[0:v]scale=720:1280:force_original_aspect_ratio=increase,crop=720:1280,setsar=1,fps=24,eq=brightness=-0.17[v];[v][1:v]overlay=enable='between(t,0,3.49)'[a];[a][2:v]overlay=enable='between(t,3.5,7.49)'[b];[b][3:v]overlay=enable='gte(t,7.5)'[out]"
             out=OUT/f"{slug}.mp4"
-            run([FFMPEG,"-hide_banner","-loglevel","error","-y","-stream_loop","-1","-i",str(source),"-i",str(tmp/"overlay0.png"),"-i",str(tmp/"overlay1.png"),"-i",str(tmp/"overlay2.png"),"-filter_complex_threads","1","-filter_complex",filters,"-map","[out]","-an","-t","12","-c:v","libx264","-pix_fmt","yuv420p","-threads","2","-preset","fast","-crf","24","-movflags","+faststart",str(out)])
+            audio = ["-map","0:a:0","-af","volume=0.55,afade=t=out:st=11:d=1","-c:a","aac","-b:a","96k"] if slug in ORIGINAL_AUDIO_SHORTS else ["-an"]
+            run([FFMPEG,"-hide_banner","-loglevel","error","-y","-stream_loop","-1","-i",str(source),"-i",str(tmp/"overlay0.png"),"-i",str(tmp/"overlay1.png"),"-i",str(tmp/"overlay2.png"),"-filter_complex_threads","1","-filter_complex",filters,"-map","[out]",*audio,"-t","12","-c:v","libx264","-pix_fmt","yuv420p","-threads","2","-preset","fast","-crf","24","-movflags","+faststart",str(out)])
             reader=imageio_ffmpeg.read_frames(str(out))
             try:
                 meta=next(reader)
                 assert meta["size"]==(720,1280)
                 assert 11.9<=float(meta["duration"])<=12.1
+                if slug in ORIGINAL_AUDIO_SHORTS:
+                    assert meta.get("audio_codec") == "aac", "Original soundtrack was not encoded"
                 assert len(next(reader))==720*1280*3
             finally:
                 reader.close()
             assert 50_000<out.stat().st_size<15_000_000
             print("QA PASS", slug, out.stat().st_size, "720x1280",meta["duration"])
-            if slug=="listing":
-                run([FFMPEG,"-hide_banner","-loglevel","error","-y","-ss","5","-i",str(out),"-frames:v","1",str(OUT/"listing_preview.jpg")])
+            if slug == "listing" or slug in ORIGINAL_AUDIO_SHORTS:
+                run([FFMPEG,"-hide_banner","-loglevel","error","-y","-ss","5","-i",str(out),"-frames:v","1",str(OUT/f"{slug}_preview.jpg")])
 
 if __name__=="__main__":
     main()
