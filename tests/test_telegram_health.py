@@ -1,7 +1,9 @@
 import datetime as dt
 import unittest
 
-from telegram_health import FeedPosts, audit
+from unittest.mock import Mock
+
+from telegram_health import FeedPosts, audit, verify_recent_receipts
 
 
 NOW = dt.datetime(2026, 11, 28, 8, 43, tzinfo=dt.timezone.utc)
@@ -35,3 +37,22 @@ class TelegramHealthTests(unittest.TestCase):
     def test_old_public_post_does_not_mask_stalled_publisher(self):
         state = {"posted": [recorded(1, day=26), {"time": "invalid"}, recorded(2, day=29)]}
         self.assertIn("last 26 hours", audit(state, {1, 2}, NOW)[-1])
+
+    def test_verifies_recent_receipt_after_public_feed_propagation(self):
+        state = {"posted": [{"message_id": 18, "time": "2026-11-28T08:41:00Z"}]}
+        fetch = Mock(side_effect=[{17}, OSError(), {17, 18}])
+        pause = Mock()
+        self.assertEqual(verify_recent_receipts(state, NOW, fetch=fetch, pause=pause), 0)
+        self.assertEqual(fetch.call_count, 3)
+        self.assertEqual([call.args[0] for call in pause.call_args_list], [8, 20])
+
+    def test_missing_recent_receipt_fails_without_resending(self):
+        state = {"posted": [{"message_id": 18, "time": "2026-11-28T08:41:00Z"}]}
+        fetch = Mock(return_value={17})
+        self.assertEqual(verify_recent_receipts(state, NOW, fetch=fetch, pause=Mock()), 1)
+        self.assertEqual(fetch.call_count, 3)
+
+    def test_no_recent_receipts_skips_the_public_request(self):
+        fetch = Mock()
+        self.assertEqual(verify_recent_receipts({"posted": [recorded(17)]}, NOW, fetch=fetch), 0)
+        fetch.assert_not_called()
