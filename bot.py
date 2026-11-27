@@ -252,10 +252,8 @@ def choose_buyer_post(state, now):
         return None
     title, body = BUYER_POSTS[day]
     variant = "compare" if day % 2 == 0 else "audit"
-    query = urllib.parse.urlencode({
-        "utm_source": "telegram", "utm_medium": "social",
-        "utm_campaign": "buyer_30_days", "utm_content": f"{variant}_{day + 1:02d}",
-    })
+    # A single parameter works in Telegram's public mirror as well as its app.
+    query = urllib.parse.urlencode({"utm_source": f"telegram_{variant}_{day + 1:02d}"})
     return {
         "id": key, "project": "VAULTIX", "title": title, "body": body,
         "url": f"{BUYER_PRODUCT}?{query}", "variant": variant,
