@@ -80,6 +80,42 @@ TIPS = (
 )
 
 
+BUYER_CAMPAIGN_START = dt.date(2026, 11, 27)
+BUYER_PRODUCT = "https://chornyilev.gumroad.com/l/xqfrfgk"
+BUYER_POSTS = (
+    ("Get the real price before you visit", "Copy this text: “Can you send an itemized out-the-door quote for VIN [VIN], including taxes, registration, dealer fees and any required add-ons? Please show trade-in and financing separately.” Keep the written quote and its expiration."),
+    ("Compare the totals, not the ads", "Example: a $12,900 car with $1,450 in mandatory charges totals $14,350. A $13,200 car with $850 in charges totals $14,050. Compare the written totals before you spend time visiting either seller."),
+    ("Screen a private-party listing", "Before arranging a visit, ask for the VIN, whose name is on the title, whether there is a lien, service receipts and permission for an independent inspection. Ask how the seller can document each answer."),
+    ("Make optional extras visible", "Ask the dealer to mark each add-on as required or optional and send a revised total without any optional extras you decline. Compare the updated written number against your other offer."),
+    ("Set a real purchase ceiling", "Start with your total budget and subtract documented immediate work and a repair reserve you choose. The remainder is your ceiling for the purchase itself. Write it down before you reach the finance office."),
+    ("Book an independent inspection", "Ask whether your mechanic can inspect the specific VIN, what the inspection covers and whether you’ll receive written findings. Set a price and appointment with the shop before sending a deposit."),
+    ("Check which buyer quotes are comparable", "Put two offers on the same footing. Separate cash price from rebates tied to financing or trade-in and record what each seller requires to qualify. Ask for written totals for the same scenario."),
+    ("Verify the VIN before paying anyone", "Match the VIN across the ad, paperwork and vehicle. A mismatch is a reason to stop and ask for clarification before paying a deposit or ordering an inspection."),
+    ("Separate trade-in value from the car price", "Ask for three written figures: the car’s out-the-door price, the trade-in allowance and any outstanding payoff. Compare the vehicle prices first so the trade doesn’t blur the numbers."),
+    ("Price the tires before deciding", "If one car needs tires soon, get a written installed quote for the correct size. Put that quote in immediate costs alongside the purchase price. Leave the cost open until you have evidence."),
+    ("Ask for evidence of recent service", "If the ad says “just serviced,” ask for a receipt and match the VIN or vehicle details, date, mileage and actual work. A receipt for an oil change doesn’t document other work."),
+    ("Find the condition behind a discount", "If a seller offers a lower price, ask what the discount depends on and when it expires. Compare that offer with the written terms you would actually accept."),
+    ("Compare the cost through the first month", "Write down the out-the-door price, documented repairs you would do immediately and a separate placeholder for insurance. Use a real insurance quote for the VIN before deciding between two cars."),
+    ("Check an inspection report for open questions", "Ask the inspector to identify what they observed, what needs another test and what should be priced now. Record those categories separately before negotiating."),
+    ("Audit the written deposit terms", "Before paying a deposit, ask for the VIN, amount, deadline and refund conditions in writing. Check what happens if the inspection finds a problem or the financing terms change."),
+    ("Ask for a quote without your trade-in", "Request an itemized purchase quote with no trade-in shown first. Then compare the separate trade offers. A higher trade allowance can be offset by a higher purchase price."),
+    ("Confirm the car before the long drive", "Confirm the exact VIN is still available and ask the seller to send the written total and inspection appointment terms. Keep a backup option until you have those answers."),
+    ("Give unknown costs their own column", "If a seller can’t quote a fee or an inspector can’t price a repair, mark it unknown. A blank in one offer is an open question. Fill it with written evidence before declaring a winner."),
+    ("Price condition and mileage together", "Two similar cars can need different work. Ask your mechanic which documented items are immediate and which can wait, then compare actual quotes alongside mileage and price."),
+    ("Review the financing with one change at a time", "Ask for the financed amount, APR, term and total repayment in writing. Compare offers with the same down payment and review any added products before signing."),
+    ("Check the actual recall status", "Use the official NHTSA VIN lookup and ask the seller for proof of completed work on any recall they say was handled. Keep inspection findings separate from recall status."),
+    ("Compare net offer after immediate repairs", "Example: an $11,800 total plus a verified $750 repair quote is $12,550 before insurance and financing. A $12,300 total can be the better deal if its inspection supports the comparison."),
+    ("Ask the seller for the missing number", "Copy this: “I can compare your offer once I have the full written total. What is still estimated or excluded from that total?” Save the answer alongside the quote."),
+    ("Read the warranty before valuing it", "If an offer includes a warranty, ask for the document and identify the covered components, exclusions and deductible. Record the exact offer terms alongside the purchase price."),
+    ("Make a two-car evidence checklist", "For each VIN, write down the current quote, title documentation, inspection findings, immediate costs and unresolved questions. Ask the seller for the missing evidence that would change your decision."),
+    ("Check title questions before comparing prices", "If the title history or status is unclear, ask the seller for documents and verify the answer with the relevant title office and your insurer before treating the offer as comparable."),
+    ("Prepare one evidence-based counteroffer", "Pick a number tied to your written quote and documented inspection costs. Say which finding drove the difference and ask for the revised out-the-door total in writing."),
+    ("Reconcile the final paperwork with the quote", "Before signing, match the VIN, seller, price, fees, credits and any accepted add-ons against the written quote. Ask for a revised itemization if something changed."),
+    ("Set a pause point before the appointment", "Write down your maximum documented total, inspection requirements and any deal-breakers. If a seller changes a number or asks you to skip a check, pause and compare your other option."),
+    ("Choose with the numbers you can verify", "Review both written totals, priced immediate work and unresolved questions. Keep a copy of the winning quote and the reason you chose it before committing to the purchase."),
+)
+
+
 def now_utc():
     return dt.datetime.now(UTC)
 
@@ -207,10 +243,37 @@ def choose_post(items, state, now):
     return next_tip()
 
 
+def choose_buyer_post(state, now):
+    day = (now.date() - BUYER_CAMPAIGN_START).days
+    if not 0 <= day < len(BUYER_POSTS):
+        return None
+    key = f"vaultix-buyer-{day + 1:02d}"
+    if any(post.get("id") == key for post in state["posted"]):
+        return None
+    title, body = BUYER_POSTS[day]
+    variant = "compare" if day % 2 == 0 else "audit"
+    query = urllib.parse.urlencode({
+        "utm_source": "telegram", "utm_medium": "social",
+        "utm_campaign": "buyer_30_days", "utm_content": f"{variant}_{day + 1:02d}",
+    })
+    return {
+        "id": key, "project": "VAULTIX", "title": title, "body": body,
+        "url": f"{BUYER_PRODUCT}?{query}", "variant": variant,
+    }
+
+
 def format_message(item):
     escape = html.escape
     url = escape(item["url"], quote=True)
     title = escape(item["title"])
+    if item["id"].startswith("vaultix-buyer-"):
+        label = (
+            "Compare both offers side by side ($12.99)" if item["variant"] == "compare"
+            else "Check the price and fee line items before you sign ($12.99)"
+        )
+        # This URL uses only a fixed HTTPS destination and urlencode output.
+        return (f"<b>VAULTIX | {title}</b>\n\n{escape(item['body'])}\n\n"
+                f'<a href="{item["url"]}">{label}</a>')
     if item["id"].startswith("tip-"):
         resource_label = "Free used-car AI kit" if "CAR_BUYER_AI_KIT.md" in item["url"] else "Official prompt-writing guide"
         return (f"🎁 <b>FREE AI PROMPT — SAVE THIS</b>\n\n<b>{title}</b>\n\n"
@@ -237,7 +300,10 @@ def run(*, dry_run=False, now=None):
     state = load_state()
     if not dry_run:
         configure_channel(token, channel, state, now)
-    item = choose_post(fetch_candidates(), state, now)
+    if now.date() >= BUYER_CAMPAIGN_START:
+        item = choose_buyer_post(state, now)
+    else:
+        item = choose_post(fetch_candidates(), state, now)
     if not item:
         print("No new post (daily cap, duplicate filter or no suitable news).")
     elif dry_run:
