@@ -35,6 +35,21 @@ In the U.S., check recalls with [NHTSA](https://www.nhtsa.gov/recalls). A recall
 
 **Important:** An AI assistant cannot physically inspect a vehicle. Its answers can be wrong. Confirm actual defects, service history, recall status and safety with primary records and a qualified mechanic.
 
+## 6) Compare the real drive-away price
+
+Write down the **agreed vehicle price, taxes and registration, and mandatory dealer fees or add-ons** for each offer. Ask for the complete quote in writing so you can see which charges are already included.
+
+| Hypothetical offers | Offer A | Offer B |
+| --- | ---: | ---: |
+| Vehicle price | $13,950 | $14,100 |
+| Taxes and registration | $800 | $800 |
+| Dealer fees and required add-ons | $650 | $150 |
+| **Out-the-door total** | **$15,400** | **$15,050** |
+
+Offer B is $350 lower before repairs, insurance, fuel and financing. Use the written numbers and keep any unknown charge blank until the seller confirms it.
+
+> Please send me an itemized out-the-door quote, including taxes, registration, dealer fees and any required add-ons. Which items are optional? Please show any trade-in or financing offer separately.
+
 ---
 
 ### Want more free, ready-to-use AI checklists?
