@@ -279,7 +279,8 @@ jobs:
         if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == false) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[publish-live]')) }}
         run: python discovery.py
       - name: Commit compact state when changed
-        if: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == false) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[publish-live]')) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[metrics-only]')) }}
+        # Preserve send receipts even if a later metrics or archive step fails.
+        if: ${{ !cancelled() && (github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == false) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[publish-live]')) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[metrics-only]'))) }}
         shell: bash
         run: |
           git add data/state.json DROPS.md feed.xml

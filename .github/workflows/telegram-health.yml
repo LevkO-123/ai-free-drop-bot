@@ -1,0 +1,29 @@
+name: Telegram Public Health
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/telegram-health.yml"
+      - "telegram_health.py"
+      - "tests/test_telegram_health.py"
+  workflow_dispatch:
+  schedule:
+    - cron: "43 8 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Test the publication verifier
+        run: python -m unittest discover -s tests -p test_telegram_health.py -v
+      - name: Check yesterday's public Telegram posts
+        if: github.event_name != 'pull_request'
+        run: python telegram_health.py
