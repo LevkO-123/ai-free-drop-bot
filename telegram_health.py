@@ -1,7 +1,9 @@
 """Check the public AIFREEDROP feed independently of the publishing API."""
 
+import argparse
 import datetime as dt
 import json
+import time
 import urllib.request
 from html.parser import HTMLParser
 
@@ -41,14 +43,43 @@ def fetch_public_ids():
     return parser.ids
 
 
-def audit(state, public_ids, now):
-    yesterday = now.date() - dt.timedelta(days=1)
+def receipt_times(state, now):
     ledger = {}
     for post in state.get("posted", []):
         message_id = post.get("message_id")
         published_at = parse_date(post.get("time"))
         if type(message_id) is int and message_id > 0 and published_at and published_at <= now:
             ledger[message_id] = published_at
+    return ledger
+
+
+def verify_recent_receipts(state, now, *, fetch=fetch_public_ids, pause=time.sleep):
+    cutoff = now - dt.timedelta(minutes=25)
+    recent_ids = {mid for mid, sent in receipt_times(state, now).items() if sent >= cutoff}
+    if not recent_ids:
+        print("No recent Telegram send receipt to verify.")
+        return 0
+
+    missing = recent_ids.copy()
+    for delay in (0, 8, 20):
+        if delay:
+            pause(delay)
+        try:
+            missing &= recent_ids - fetch()
+        except (OSError, ValueError):
+            continue
+        if not missing:
+            print("Public Telegram delivery verified:", ", ".join(map(str, sorted(recent_ids))))
+            return 0
+
+    print("::error::Unable to verify public Telegram delivery for stored receipt IDs: "
+          + ", ".join(map(str, sorted(missing))))
+    return 1
+
+
+def audit(state, public_ids, now):
+    yesterday = now.date() - dt.timedelta(days=1)
+    ledger = receipt_times(state, now)
 
     yesterday_ids = {mid for mid, published_at in ledger.items() if published_at.date() == yesterday}
     visible_yesterday = yesterday_ids & public_ids
@@ -65,8 +96,14 @@ def audit(state, public_ids, now):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--recent", action="store_true", help="Verify recent sends after a publisher run.")
+    args = parser.parse_args()
     state = json.loads(STATE.read_text(encoding="utf-8"))
-    errors = audit(state, fetch_public_ids(), now_utc())
+    now = now_utc()
+    if args.recent:
+        return verify_recent_receipts(state, now)
+    errors = audit(state, fetch_public_ids(), now)
     if errors:
         for error in errors:
             print(f"::error::{error}")
