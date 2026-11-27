@@ -50,6 +50,8 @@ Offer B is $350 lower before repairs, insurance, fuel and financing. Use the wri
 
 > Please send me an itemized out-the-door quote, including taxes, registration, dealer fees and any required add-ons. Which items are optional? Please show any trade-in or financing offer separately.
 
+
+**Already have two written quotes?** Use the paid [VAULTIX Used-Car Deal Sheet ($12.99)](https://chornyilev.gumroad.com/l/xqfrfgk?utm_source=github&utm_medium=referral&utm_campaign=used_car_buyer_kit) to enter both offers, compare their totals, and print or save the comparison. It’s one downloadable HTML file that opens in your browser.
 ---
 
 ### Want more free, ready-to-use AI checklists?
