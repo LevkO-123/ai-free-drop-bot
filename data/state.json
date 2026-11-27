@@ -67,13 +67,22 @@
       "project": "llama.cpp",
       "message_id": 17,
       "post_url": "https://t.me/AIFREEDROP/17"
+    },
+    {
+      "id": "tip-4",
+      "date": "2026-11-27",
+      "time": "2026-11-27T01:36:09+00:00",
+      "project": "AI Workflow",
+      "message_id": 18,
+      "post_url": "https://t.me/AIFREEDROP/18"
     }
   ],
   "tips": [
     "tip-0",
     "tip-1",
     "tip-2",
-    "tip-3"
+    "tip-3",
+    "tip-4"
   ],
   "counts": [
     {
@@ -94,6 +103,10 @@
     },
     {
       "date": "2026-11-26",
+      "subscribers": 2
+    },
+    {
+      "date": "2026-11-27",
       "subscribers": 2
     }
   ],
