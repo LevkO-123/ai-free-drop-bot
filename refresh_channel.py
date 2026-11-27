@@ -8,6 +8,14 @@ import os
 from bot import telegram, load_state, save_state
 from branding import DESCRIPTION, WELCOME
 
+PROFILE_TITLE = "VAULTIX"
+PROFILE_DESCRIPTION = (
+    "Luxury cars, smart used-car buying and practical automotive tech. "
+    "Free buyer kit: https://t.me/AIFREEDROP/3\n"
+    "YouTube: https://www.youtube.com/channel/UCvbGy3iGHLNcJAnmZeya6XQ\n"
+    "TikTok: https://www.tiktok.com/@vaultixstyle"
+)
+
 CHANNEL = "@AIFREEDROP"
 VERSION = 4
 
@@ -46,5 +54,30 @@ def refresh(api=telegram, loader=load_state, persist=save_state):
     print("AIFREEDROP welcome v4 edited in place; no new post created.")
 
 
+def refresh_profile(api=telegram):
+    """Apply the public VAULTIX profile without changing the channel handle."""
+    token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
+    if not token:
+        raise RuntimeError("Missing configured Telegram secret")
+    if os.environ.get("TELEGRAM_CHANNEL", CHANNEL) not in ("", CHANNEL):
+        raise RuntimeError("Refusing to edit any other channel")
+    payload = {"chat_id": CHANNEL}
+    chat = api(token, "getChat", payload)
+    if (not isinstance(chat, dict) or chat.get("type") != "channel"
+            or (chat.get("username") or "").lower() != "aifreedrop"):
+        raise RuntimeError("Expected public AIFREEDROP channel was not verified")
+    if len(PROFILE_DESCRIPTION) > 255:
+        raise ValueError("Telegram description limit exceeded")
+    if chat.get("title") != PROFILE_TITLE:
+        api(token, "setChatTitle", {**payload, "title": PROFILE_TITLE})
+    if chat.get("description") != PROFILE_DESCRIPTION:
+        api(token, "setChatDescription", {**payload, "description": PROFILE_DESCRIPTION})
+    verified = api(token, "getChat", payload)
+    if (verified.get("title"), verified.get("description")) != (PROFILE_TITLE, PROFILE_DESCRIPTION):
+        raise RuntimeError("The VAULTIX channel profile could not be verified")
+    print("Verified VAULTIX title and description on @AIFREEDROP.")
+
+
 if __name__ == "__main__":
     refresh()
+    refresh_profile()
