@@ -83,6 +83,14 @@
       "project": "VAULTIX",
       "message_id": 20,
       "post_url": "https://t.me/AIFREEDROP/20"
+    },
+    {
+      "id": "vaultix-buyer-02",
+      "date": "2026-11-28",
+      "time": "2026-11-28T04:44:50+00:00",
+      "project": "VAULTIX",
+      "message_id": 21,
+      "post_url": "https://t.me/AIFREEDROP/21"
     }
   ],
   "tips": [
@@ -115,6 +123,10 @@
     },
     {
       "date": "2026-11-27",
+      "subscribers": 2
+    },
+    {
+      "date": "2026-11-28",
       "subscribers": 2
     }
   ],
@@ -152,6 +164,10 @@
     },
     {
       "time": "2026-11-27T05:04:35+00:00",
+      "members": 2
+    },
+    {
+      "time": "2026-11-28T04:44:51+00:00",
       "members": 2
     }
   ],
